@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db": "docker-compose -f mongo.yml up -d",
+    "stop-db": "docker-compose -f mongo.yml down"
   },
   "dependencies": {
+    "@craftjs/core": "^0.1.0-beta.19",
     "antd": "^4.16.7",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
