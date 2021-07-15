@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: abcd1234
     volumes:
-      - ./database/:/data/db/
+      - ./.database/:/data/db/
 
   mongo-express:
     image: mongo-express:0.54
