@@ -10,18 +10,19 @@ import {
 } from '@ant-design/icons';
 import Head from 'next/head';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 interface Props {
   children: React.ReactNode;
+  className?: string;
 }
 
-const AppLayout: React.FC<Props> = ({ children }) => {
+const AppLayout: React.FC<Props> = ({ children, className }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
   const dropdownMenu = useMemo(() => {
     return (
-      <Menu className={styles.dropdownMenu}>
+      <Menu>
         <Menu.Item>
           <a
             target="_blank"
@@ -63,8 +64,8 @@ const AppLayout: React.FC<Props> = ({ children }) => {
           <div className={styles.logo}>
             <Image
               src={logo}
-              width={700}
-              height={400}
+              width={70}
+              height={40}
               alt="Affiliate Marketing Logo"
             />
             <h2 hidden={collapsed}>Affiliate Marketing</h2>
@@ -106,7 +107,13 @@ const AppLayout: React.FC<Props> = ({ children }) => {
               </Dropdown>
             </div>
           </Header>
-          <Content className={styles.content}>{children}</Content>
+          <Content
+            className={
+              className ? `${styles.content} ${className}` : styles.content
+            }
+          >
+            {children}
+          </Content>
         </Layout>
       </Layout>
     </>

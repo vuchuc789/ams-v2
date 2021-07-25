@@ -1,156 +1,17 @@
 import React from 'react';
 import { AppLayout } from 'components';
+import { Button, Card } from 'antd';
+import styles from 'styles/Login.module.scss';
+import { FacebookFilled } from '@ant-design/icons';
 
 const Login: React.FC = () => {
   return (
-    <AppLayout>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam dolores
-      saepe rem tempora harum iure quidem esse rerum mollitia, dolorum fuga quas
-      quis ipsam, atque nobis, tempore perspiciatis. Voluptas, at? Lorem ipsum
-      dolor sit amet consectetur adipisicing elit. Aliquam dolores saepe rem
-      tempora harum iure quidem esse rerum mollitia, dolorum fuga quas quis
-      ipsam, atque nobis, tempore perspiciatis. Voluptas, at? Lorem ipsum dolor
-      sit amet consectetur adipisicing elit. Aliquam dolores saepe rem tempora
-      harum iure quidem esse rerum mollitia, dolorum fuga quas quis ipsam, atque
-      nobis, tempore perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Aliquam dolores saepe rem tempora harum iure
-      quidem esse rerum mollitia, dolorum fuga quas quis ipsam, atque nobis,
-      tempore perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at? Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Aliquam dolores saepe rem tempora harum iure quidem esse
-      rerum mollitia, dolorum fuga quas quis ipsam, atque nobis, tempore
-      perspiciatis. Voluptas, at?
+    <AppLayout className={styles.login}>
+      <Card title="Login">
+        <Button type="primary" shape="round" icon={<FacebookFilled />}>
+          Login with Facebook
+        </Button>
+      </Card>
     </AppLayout>
   );
 };

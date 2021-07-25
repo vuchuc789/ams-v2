@@ -45,13 +45,8 @@
     }
   }
 
-  .dropdownMenu {
-    margin-right: 0.25rem;
-  }
-
   .content {
-    overflow: auto;
-    max-height: calc(100vh - 4rem);
-    width: 100%;
+    overflow: auto !important;
+    max-height: calc(100vh - 4rem) !important;
   }
 }
