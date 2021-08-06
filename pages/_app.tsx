@@ -1,15 +1,14 @@
-import type { AppProps } from 'next/app';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import { useEffect } from 'react';
-import { notification } from 'antd';
-import { NOTIFICATION_DURATION, NOTIFICATION_PLACEMENT } from '@constants';
-
-import 'antd/dist/antd.css';
 import '../styles/globals.scss';
-
+import 'antd/dist/antd.css';
 import rootReducer from 'reducers';
+import thunk from 'redux-thunk';
+import type { AppProps } from 'next/app';
+import { NOTIFICATION_DURATION, NOTIFICATION_PLACEMENT } from '@constants';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { notification } from 'antd';
+import { useEffect } from 'react';
+import { Initialization } from 'components';
 
 const composeEnhancers =
   (process.env.NODE_ENV === 'development' &&
@@ -31,7 +30,9 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <Initialization>
+        <Component {...pageProps} />
+      </Initialization>
     </Provider>
   );
 };

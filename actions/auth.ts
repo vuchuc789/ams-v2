@@ -1,21 +1,76 @@
-import { notification } from 'antd';
-import { AppDispatch } from 'interfaces';
-import { ActionType } from '@constants';
+import type { AsyncAction } from 'interfaces';
+import { FacebookService } from 'services';
+import { LOGGING_IN, LOGGED_IN } from '@constants';
+import { notifyError, notifySuccess } from './notification';
 
-const { LOGIN } = ActionType;
+const popupFacebookLoginWindow =
+  (callback = () => {}): AsyncAction =>
+  async (dispatch, getState) => {
+    const facebookService = FacebookService.getInstance();
+    if (!facebookService) {
+      dispatch(notifyError('Fail to login with Facebook'));
+      return;
+    }
 
-export const loginWithFacebook = (dispatch: AppDispatch) => {
-  if (!FB) {
-    notification.error({
-      message: 'Error',
-      description: 'Facebook is not available',
-    });
+    const {
+      authReducer: { isLoggingIn },
+    } = getState();
 
-    return;
-  }
+    if (!isLoggingIn) {
+      dispatch({ type: LOGGING_IN });
+    }
 
-  FB.getLoginStatus((response) => {
-    console.log(response);
-    dispatch({ type: LOGIN, payload: {} });
-  });
-};
+    const { status, authResponse } = await facebookService.login();
+
+    if (status === 'connected') {
+      dispatch({ type: LOGGED_IN, payload: authResponse });
+      dispatch(notifySuccess('Login with facebook successfully'));
+
+      callback();
+      return;
+    }
+
+    dispatch(notifyError('Fail to login with Facebook'));
+    dispatch({ type: LOGGED_IN });
+
+    callback();
+  };
+
+export const loginWithFacebook =
+  (
+    {
+      loginIfNotDone,
+    }: {
+      loginIfNotDone: boolean;
+    },
+    callback = () => {},
+  ): AsyncAction =>
+  async (dispatch) => {
+    const facebookService = FacebookService.getInstance();
+    if (!facebookService) {
+      dispatch(
+        notifyError('Logging in with Facebook is currently unavailable'),
+      );
+      return;
+    }
+
+    dispatch({ type: LOGGING_IN });
+
+    const { status, authResponse } = await facebookService.getLoginStatus();
+
+    if (status === 'connected') {
+      dispatch({ type: LOGGED_IN, payload: authResponse });
+
+      callback();
+      return;
+    }
+
+    if (loginIfNotDone) {
+      dispatch(popupFacebookLoginWindow(callback));
+      return;
+    }
+
+    dispatch({ type: LOGGED_IN });
+
+    callback();
+  };

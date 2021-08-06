@@ -1,11 +1,16 @@
-import type { store } from 'pages/_app';
-import type { ActionType } from '@constants';
+import { store } from 'pages/_app';
+import type { Action, AnyAction } from 'redux';
+import type { ThunkDispatch } from 'redux-thunk';
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export type AppDispatch = typeof store.dispatch;
-
-export interface AppAction<T> {
-  type: ActionType;
-  payload: Partial<T>;
+export interface SyncAction<T> extends AnyAction {
+  type: string;
+  payload?: Partial<T>;
 }
+
+export type AsyncAction = (
+  dispatch: ThunkDispatch<RootState, unknown, AnyAction>,
+  getState: () => RootState,
+  extraArgument: unknown,
+) => void;

@@ -3,13 +3,19 @@ import { AppLayout } from 'components';
 import { Button, Card } from 'antd';
 import styles from 'styles/Login.module.scss';
 import { FacebookFilled } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginWithFacebook } from 'actions';
+import type { RootState } from 'interfaces';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
+
+  const isLoggingIn = useSelector(
+    (state: RootState) => state.authReducer.isLoggingIn,
+  );
+
   const onLogin = useCallback(() => {
-    dispatch(loginWithFacebook);
+    dispatch(loginWithFacebook({ loginIfNotDone: true }));
   }, [dispatch]);
 
   return (
@@ -20,8 +26,18 @@ const Login: React.FC = () => {
           shape="round"
           icon={<FacebookFilled />}
           onClick={onLogin}
+          loading={isLoggingIn}
         >
           Login with Facebook
+        </Button>
+        <Button
+          onClick={() => {
+            FB.logout((res) => {
+              console.log(res);
+            });
+          }}
+        >
+          Logout
         </Button>
       </Card>
     </AppLayout>

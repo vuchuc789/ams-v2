@@ -17,7 +17,7 @@ interface Props {
   className?: string;
 }
 
-const AppLayout: React.FC<Props> = ({ children, className }) => {
+export const AppLayout: React.FC<Props> = ({ children, className }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
   const dropdownMenu = useMemo(() => {
@@ -119,5 +119,3 @@ const AppLayout: React.FC<Props> = ({ children, className }) => {
     </>
   );
 };
-
-export { AppLayout };

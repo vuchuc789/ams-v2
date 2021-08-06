@@ -1,25 +1,33 @@
-import { ActionType } from '@constants';
-import type { AppAction } from 'interfaces';
+import { LOGGED_IN, LOGGING_IN } from '@constants';
+import type { SyncAction } from 'interfaces';
 
-const { LOGIN } = ActionType;
-
-interface AuthState {
-  accessToken: string;
+interface AuthState extends fb.AuthResponse {
+  isLoggingIn: boolean;
 }
 
 const initialState: AuthState = {
   accessToken: '',
+  userID: '',
+  expiresIn: 0,
+  signedRequest: '',
+  isLoggingIn: false,
 };
 
 const authReducer = (
   state = initialState,
-  { type, payload }: AppAction<AuthState>,
+  { type, payload }: SyncAction<AuthState>,
 ): AuthState => {
   switch (type) {
-    case LOGIN:
+    case LOGGED_IN:
       return {
         ...state,
-        accessToken: payload.accessToken || initialState.accessToken,
+        ...payload,
+        isLoggingIn: false,
+      };
+    case LOGGING_IN:
+      return {
+        ...state,
+        isLoggingIn: true,
       };
 
     default:
