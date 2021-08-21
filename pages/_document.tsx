@@ -1,3 +1,4 @@
+import { FACEBOOK_API_VERSION } from '@constants';
 import Document, {
   Html,
   Head,
@@ -39,7 +40,7 @@ class CustomDocument extends Document<Props> {
         <body>
           <script
             dangerouslySetInnerHTML={{
-              __html: `window.fbAsyncInit=function(){FB.init({appId:"${this.props.facebookAppId}",autoLogAppEvents:true,xfbml:true,version:"v11.0"})}`,
+              __html: `window.fbAsyncInit=function(){FB.init({appId:"${this.props.facebookAppId}",autoLogAppEvents:true,xfbml:true,version:"${FACEBOOK_API_VERSION}"})}`,
             }}
           ></script>
           <script

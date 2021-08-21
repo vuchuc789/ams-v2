@@ -1,10 +1,8 @@
 import {
-  FACEBOOK_API_VERSION,
   FACEBOOK_LOGIN_SCOPES,
+  FACEBOOK_URL,
   FACEBOOK_USER_INFO_FIELDS,
 } from '@constants';
-
-const facebookApiUrl = `https://graph.facebook.com/${FACEBOOK_API_VERSION}`;
 
 export class FacebookService {
   private accessToken: string = '';
@@ -45,11 +43,10 @@ export class FacebookService {
 
   public async getUserInfo(): Promise<{ [key: string]: unknown }> {
     const response = await fetch(
-      `${facebookApiUrl}/me?fields=${FACEBOOK_USER_INFO_FIELDS.join(',')}`,
+      `${FACEBOOK_URL}/me?fields=${FACEBOOK_USER_INFO_FIELDS.join(',')}`,
       {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${this.accessToken}`,
         },
       },

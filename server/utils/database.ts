@@ -1,12 +1,17 @@
 import mongoose from 'mongoose';
+import type { Mongoose } from 'mongoose';
 
-export class MongoDB {
-  private static instance: MongoDB;
+export class Database {
+  private static instance: Database;
 
-  private connection: Promise<typeof mongoose>;
+  private connection: Promise<Mongoose>;
 
   private constructor() {
-    const mongoURI: string = process.env.MONGO_URI || '';
+    const mongoURI: string | undefined = process.env.MONGO_URI;
+
+    if (!mongoURI) {
+      throw new Error('MONGO_URI is not found in .env.local');
+    }
 
     this.connection = mongoose
       .connect(mongoURI, {
@@ -20,11 +25,11 @@ export class MongoDB {
       });
   }
 
-  static connect() {
-    if (!MongoDB.instance) {
-      MongoDB.instance = new MongoDB();
+  static async connect() {
+    if (!Database.instance || !Database.instance.connection) {
+      Database.instance = new Database();
     }
 
-    return MongoDB.instance.connection;
+    return await Database.instance.connection;
   }
 }

@@ -16,7 +16,6 @@
     "@craftjs/core": "^0.1.0-beta.20",
     "@types/facebook-js-sdk": "^3.3.4",
     "antd": "4.15.6",
-    "axios": "^0.21.1",
     "link-preview-js": "^2.1.8",
     "mongoose": "^5.13.5",
     "next": "11.0.1",
@@ -29,7 +28,7 @@
   },
   "devDependencies": {
     "@types/react": "17.0.16",
-    "concurrently": "^6.2.0",
+    "concurrently": "^6.2.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.0.1",
     "eslint-config-prettier": "^8.3.0",

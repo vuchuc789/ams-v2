@@ -1,6 +1,6 @@
 import type { AsyncAction } from 'interfaces';
-import { FacebookService } from 'services';
-import { LOGGING_IN, LOGGED_IN } from '@constants';
+import { checkUser, FacebookService } from 'services';
+import { LOGGING_IN, LOGGED_IN, LOGIN_TYPE } from '@constants';
 import { notifyError, notifySuccess } from './notification';
 
 const popupFacebookLoginWindow =
@@ -24,6 +24,9 @@ const popupFacebookLoginWindow =
 
     if (status === 'connected') {
       dispatch({ type: LOGGED_IN, payload: authResponse });
+
+      await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
+
       dispatch(notifySuccess('Login with facebook successfully'));
 
       callback();
@@ -61,16 +64,16 @@ export const loginWithFacebook =
     if (status === 'connected') {
       dispatch({ type: LOGGED_IN, payload: authResponse });
 
-      callback();
-      return;
-    }
+      await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
+    } else {
+      if (loginIfNotDone) {
+        // this case does not directly call callback function
+        dispatch(popupFacebookLoginWindow(callback));
+        return;
+      }
 
-    if (loginIfNotDone) {
-      dispatch(popupFacebookLoginWindow(callback));
-      return;
+      dispatch({ type: LOGGED_IN });
     }
-
-    dispatch({ type: LOGGED_IN });
 
     callback();
   };
