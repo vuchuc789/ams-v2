@@ -34,6 +34,11 @@ export class FacebookService {
     return new Promise((resolve) => {
       FB.login(
         (response) => {
+          const { status, authResponse } = response;
+          if (status === 'connected') {
+            this.accessToken = authResponse.accessToken;
+          }
+
           resolve(response);
         },
         { scope: FACEBOOK_LOGIN_SCOPES.join(',') },
@@ -53,5 +58,13 @@ export class FacebookService {
     );
 
     return await response.json();
+  }
+
+  public logout(): Promise<void> {
+    return new Promise((resolve) => {
+      FB.logout(() => {
+        resolve();
+      });
+    });
   }
 }

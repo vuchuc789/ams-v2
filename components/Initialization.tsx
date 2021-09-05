@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from 'styles/Initialization.module.scss';
-import type { AsyncAction } from 'interfaces';
+import type { AsyncAction, AsyncDispatch } from 'interfaces';
 import { Spin } from 'antd';
 import { loginWithFacebook } from 'actions';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,7 @@ export const Initialization: React.FC<Props> = ({ children }) => {
   const [remainingActions, setRemainingActions] =
     useState<((callback: () => void) => AsyncAction)[]>(actionCreators);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AsyncDispatch>();
 
   useEffect(() => {
     actionCreators.forEach((actionCreator) => {

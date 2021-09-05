@@ -1,4 +1,4 @@
-import { LOGGED_IN, LOGGING_IN } from '@constants';
+import { LOGGED_IN, LOGGING_IN, LOGOUT } from '@constants';
 import type { SyncAction } from 'interfaces';
 
 interface AuthState extends fb.AuthResponse {
@@ -29,7 +29,8 @@ const authReducer = (
         ...state,
         isLoggingIn: true,
       };
-
+    case LOGOUT:
+      return initialState;
     default:
       return state;
   }

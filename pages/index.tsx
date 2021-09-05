@@ -1,4 +1,3 @@
-import React from 'react';
 import { AppLayout } from 'components';
 import styles from 'styles/Home.module.scss';
 

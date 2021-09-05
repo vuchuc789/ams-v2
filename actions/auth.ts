@@ -1,42 +1,53 @@
 import type { AsyncAction } from 'interfaces';
 import { checkUser, FacebookService } from 'services';
-import { LOGGING_IN, LOGGED_IN, LOGIN_TYPE } from '@constants';
+import {
+  LOGGING_IN,
+  LOGGED_IN,
+  LOGIN_TYPE,
+  LOGOUT,
+  SET_USER_INFO,
+  CLEAR_USER_INFO,
+} from '@constants';
 import { notifyError, notifySuccess } from './notification';
 
 const popupFacebookLoginWindow =
   (callback = () => {}): AsyncAction =>
   async (dispatch, getState) => {
-    const facebookService = FacebookService.getInstance();
-    if (!facebookService) {
-      dispatch(notifyError('Fail to login with Facebook'));
-      return;
-    }
+    try {
+      const facebookService = FacebookService.getInstance();
+      if (!facebookService) {
+        dispatch(notifyError('Fail to login with Facebook'));
+      } else {
+        const {
+          auth: { isLoggingIn },
+        } = getState();
 
-    const {
-      authReducer: { isLoggingIn },
-    } = getState();
+        if (!isLoggingIn) {
+          dispatch({ type: LOGGING_IN });
+        }
 
-    if (!isLoggingIn) {
-      dispatch({ type: LOGGING_IN });
-    }
+        const { status, authResponse } = await facebookService.login();
 
-    const { status, authResponse } = await facebookService.login();
+        if (status === 'connected') {
+          dispatch({ type: LOGGED_IN, payload: authResponse });
 
-    if (status === 'connected') {
-      dispatch({ type: LOGGED_IN, payload: authResponse });
+          await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
 
-      await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
+          dispatch(notifySuccess('Login with facebook successfully'));
 
-      dispatch(notifySuccess('Login with facebook successfully'));
+          const userInfo = await facebookService.getUserInfo();
 
+          dispatch({ type: SET_USER_INFO, payload: userInfo });
+        } else {
+          dispatch(notifyError('Fail to login with Facebook'));
+          dispatch({ type: LOGGED_IN });
+        }
+      }
+    } catch (e) {
+      dispatch(notifyError((e as Error).message));
+    } finally {
       callback();
-      return;
     }
-
-    dispatch(notifyError('Fail to login with Facebook'));
-    dispatch({ type: LOGGED_IN });
-
-    callback();
   };
 
 export const loginWithFacebook =
@@ -49,31 +60,56 @@ export const loginWithFacebook =
     callback = () => {},
   ): AsyncAction =>
   async (dispatch) => {
+    try {
+      const facebookService = FacebookService.getInstance();
+      if (!facebookService) {
+        dispatch(
+          notifyError('Logging in with Facebook is currently unavailable'),
+        );
+      } else {
+        dispatch({ type: LOGGING_IN });
+
+        const { status, authResponse } = await facebookService.getLoginStatus();
+
+        if (status === 'connected') {
+          dispatch({ type: LOGGED_IN, payload: authResponse });
+
+          await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
+
+          const userInfo = await facebookService.getUserInfo();
+
+          dispatch({ type: SET_USER_INFO, payload: userInfo });
+        } else {
+          if (loginIfNotDone) {
+            // this case does not directly call callback function
+            dispatch(popupFacebookLoginWindow(callback));
+            return;
+          }
+
+          dispatch({ type: LOGGED_IN });
+        }
+      }
+    } catch (e) {
+      dispatch(notifyError((e as Error).message));
+    } finally {
+      callback();
+    }
+  };
+
+export const logout = (): AsyncAction => async (dispatch) => {
+  try {
     const facebookService = FacebookService.getInstance();
     if (!facebookService) {
       dispatch(
-        notifyError('Logging in with Facebook is currently unavailable'),
+        notifyError('Logging out with Facebook is currently unavailable'),
       );
-      return;
-    }
-
-    dispatch({ type: LOGGING_IN });
-
-    const { status, authResponse } = await facebookService.getLoginStatus();
-
-    if (status === 'connected') {
-      dispatch({ type: LOGGED_IN, payload: authResponse });
-
-      await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
     } else {
-      if (loginIfNotDone) {
-        // this case does not directly call callback function
-        dispatch(popupFacebookLoginWindow(callback));
-        return;
-      }
-
-      dispatch({ type: LOGGED_IN });
+      await facebookService.logout();
+      dispatch({ type: LOGOUT });
+      dispatch({ type: CLEAR_USER_INFO });
+      dispatch(notifySuccess('You are logged out'));
     }
-
-    callback();
-  };
+  } catch (e) {
+    dispatch(notifyError((e as Error).message));
+  }
+};

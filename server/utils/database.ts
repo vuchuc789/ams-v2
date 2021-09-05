@@ -13,16 +13,9 @@ export class Database {
       throw new Error('MONGO_URI is not found in .env.local');
     }
 
-    this.connection = mongoose
-      .connect(mongoURI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: true,
-        useCreateIndex: true,
-      })
-      .then((connection) => {
-        return connection;
-      });
+    this.connection = mongoose.connect(mongoURI).then((connection) => {
+      return connection;
+    });
   }
 
   static async connect() {

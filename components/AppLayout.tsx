@@ -1,14 +1,28 @@
-import React, { useMemo, useState } from 'react';
-import { Dropdown, Layout, Menu } from 'antd';
+import React, { useEffect, useMemo } from 'react';
+import { Avatar, Dropdown, Layout, Menu } from 'antd';
 import styles from 'styles/AppLayout.module.scss';
 import Image from 'next/image';
 import logo from 'public/logo.png';
-import {
+import Icon, {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   MenuOutlined,
+  HomeOutlined,
+  LoginOutlined,
+  ProfileOutlined,
+  EditOutlined,
 } from '@ant-design/icons';
 import Head from 'next/head';
+import { useSelector, useDispatch } from 'react-redux';
+import type { AsyncDispatch, RootState, SyncDispatch } from 'interfaces';
+import { useRouter } from 'next/router';
+import {
+  ADD_TO_DROPDOWN,
+  REMOVE_FROM_DROPDOWN,
+  TOGGLE_SIDER,
+} from '@constants';
+import { logout } from 'actions';
+import Link from 'next/link';
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,42 +31,155 @@ interface Props {
   className?: string;
 }
 
+interface SiderItem {
+  path: string;
+  title: string;
+  icon: typeof Icon;
+}
+
+const siderItems: {
+  authRequired: SiderItem[];
+  noAuthRequired: SiderItem[];
+} = {
+  noAuthRequired: [
+    { path: '/', title: 'Home', icon: HomeOutlined },
+    { path: '/login', title: 'Login', icon: LoginOutlined },
+  ],
+  authRequired: [
+    { path: '/profile', title: 'Profile', icon: ProfileOutlined },
+    { path: '/editor', title: 'Editor', icon: EditOutlined },
+  ],
+};
+
+const sortedPaths = [
+  ...siderItems.noAuthRequired.map((item) => item.path),
+  ...siderItems.authRequired.map((item) => item.path),
+].sort((a, b) => b.length - a.length);
+
 export const AppLayout: React.FC<Props> = ({ children, className }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const router = useRouter();
+  const syncDispatch = useDispatch<SyncDispatch>();
+  const asyncDispatch = useDispatch<AsyncDispatch>();
+
+  const isLoggedIn = useSelector(
+    (state: RootState) => !!state.auth.accessToken,
+  );
+
+  const collapsed = useSelector(
+    (state: RootState) => state.mainLayout.siderCollapsed,
+  );
+
+  const dropdownData = useSelector(
+    (state: RootState) => state.mainLayout.dropdownMenu,
+  );
+
+  const userAvatar = useSelector(
+    (state: RootState) =>
+      (
+        state.userInfo?.picture as
+          | { data: { url: string; width: number; height: number } }
+          | undefined
+      )?.data,
+  );
+
+  const userName = useSelector(
+    (state: RootState) => state.userInfo?.name as string | undefined,
+  );
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      syncDispatch({
+        type: ADD_TO_DROPDOWN,
+        payload: {
+          dropdownMenu: [
+            {
+              title: 'About affiliate marketing',
+              action: () => {
+                window.open(
+                  'https://en.wikipedia.org/wiki/Affiliate_marketing',
+                  '_blank',
+                );
+              },
+            },
+          ],
+        },
+      });
+    } else {
+      syncDispatch({
+        type: ADD_TO_DROPDOWN,
+        payload: {
+          dropdownMenu: [
+            {
+              title: 'About affiliate marketing',
+              action: () => {
+                window.open(
+                  'https://en.wikipedia.org/wiki/Affiliate_marketing',
+                  '_blank',
+                );
+              },
+            },
+            {
+              title: 'Logout',
+              action: () => {
+                asyncDispatch(logout());
+              },
+            },
+          ],
+        },
+      });
+    }
+
+    return () => {
+      syncDispatch({ type: REMOVE_FROM_DROPDOWN });
+    };
+  }, [syncDispatch, asyncDispatch, isLoggedIn, router]);
+
+  const siderMenu = useMemo(() => {
+    const items = isLoggedIn
+      ? siderItems.authRequired
+      : siderItems.noAuthRequired;
+
+    const selectedKey = sortedPaths.find((prefix) =>
+      router.pathname.startsWith(prefix),
+    );
+
+    return (
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={selectedKey ? [selectedKey] : undefined}
+        onSelect={({ key }) => {
+          router.push(key as string);
+        }}
+      >
+        {items.map(({ title, path, icon }) => {
+          return (
+            <Menu.Item key={path} icon={React.createElement(icon)}>
+              {title}
+            </Menu.Item>
+          );
+        })}
+      </Menu>
+    );
+  }, [isLoggedIn, router]);
 
   const dropdownMenu = useMemo(() => {
     return (
       <Menu>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            1st menu item
-          </a>
-        </Menu.Item>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.aliyun.com"
-          >
-            2nd menu item
-          </a>
-        </Menu.Item>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.luohanacademy.com"
-          >
-            3rd menu item
-          </a>
-        </Menu.Item>
+        {dropdownData.map(({ title, action = () => {} }) => {
+          if (title === '') {
+            return <Menu.Divider />;
+          }
+
+          return (
+            <Menu.Item key={title}>
+              <a onClick={action}>{title}</a>
+            </Menu.Item>
+          );
+        })}
       </Menu>
     );
-  }, []);
+  }, [dropdownData]);
 
   return (
     <>
@@ -70,38 +197,31 @@ export const AppLayout: React.FC<Props> = ({ children, className }) => {
             />
             <h2 hidden={collapsed}>Affiliate Marketing</h2>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1" icon={<MenuOutlined />}>
-              nav 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<MenuOutlined />}>
-              nav 2
-            </Menu.Item>
-            <Menu.Item key="3" icon={<MenuOutlined />}>
-              nav 3
-            </Menu.Item>
-          </Menu>
+          {siderMenu}
         </Sider>
         <Layout>
           <Header className={styles.header}>
-            <div className={styles.leftHeader}>
-              {collapsed ? (
-                <MenuUnfoldOutlined
-                  className={styles.icon}
-                  onClick={() => {
-                    setCollapsed(false);
-                  }}
-                />
-              ) : (
-                <MenuFoldOutlined
-                  className={styles.icon}
-                  onClick={() => {
-                    setCollapsed(true);
-                  }}
-                />
+            <div>
+              {React.createElement(
+                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                {
+                  className: styles.icon,
+                  onClick: () => {
+                    syncDispatch({ type: TOGGLE_SIDER });
+                  },
+                },
               )}
             </div>
-            <div className={styles.rightHeader}>
+            <div>
+              {!!userName && (
+                <h4>
+                  Hello,{' '}
+                  <Link href="/profile">
+                    <a>{userName}</a>
+                  </Link>
+                </h4>
+              )}
+              {!!userAvatar && <Avatar src={userAvatar.url} size="large" />}
               <Dropdown overlay={dropdownMenu} placement="bottomLeft">
                 <MenuOutlined className={styles.icon} />
               </Dropdown>
