@@ -1,0 +1,57 @@
+$top-bar-height: 3rem;
+
+.topBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: $top-bar-height;
+}
+
+.editor {
+  height: calc(100% - #{$top-bar-height});
+  display: flex;
+
+  > * {
+    height: 100%;
+    flex: 1 1 auto;
+  }
+}
+
+.sideBar {
+  flex: 0 1 auto;
+  width: 15rem;
+  padding: 0.5rem;
+}
+
+.container {
+  height: 100%;
+  overflow: auto;
+  background-color: #fff;
+}
+
+.indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: content-box;
+
+  &Top {
+    @extend .indicator;
+    border-top: 1px dashed red;
+  }
+
+  &Right {
+    @extend .indicator;
+    border-right: 1px dashed red;
+  }
+
+  &Bottom {
+    @extend .indicator;
+    border-bottom: 1px dashed red;
+  }
+
+  &Left {
+    @extend .indicator;
+    border-left: 1px dashed red;
+  }
+}
