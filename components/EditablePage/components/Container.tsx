@@ -8,7 +8,7 @@ interface ContainerProps {
 export const Container: UserComponent<Partial<ContainerProps>> = ({
   children,
   className,
-}: Partial<ContainerProps>) => {
+}) => {
   const {
     connectors: { connect },
   } = useNode();

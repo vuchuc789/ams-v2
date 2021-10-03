@@ -2,7 +2,7 @@ import { Editor, Element, Frame } from '@craftjs/core';
 import { TopBar } from './TopBar';
 import { SideBar } from './SideBar';
 import styles from 'styles/EditablePage.module.scss';
-import { Container, Text } from './components';
+import { Container, Paragraph, Text, Image, Space } from './components';
 import React from 'react';
 import { RenderNode } from './RenderNode';
 import { useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ interface EditablePageProps {
 export const EditablePage: React.FC<EditablePageProps> = ({
   isEditable = false,
   className,
-}: EditablePageProps) => {
+}) => {
   const { x, y, width, height } = useSelector(
     (state: RootState) => state.editorIndicator,
   );
@@ -44,7 +44,7 @@ export const EditablePage: React.FC<EditablePageProps> = ({
         </>
       )}
       <Editor
-        resolver={{ Container, Text }}
+        resolver={{ Container, Text, Paragraph, Image, Space }}
         onRender={RenderNode}
         enabled={isEditable}
       >

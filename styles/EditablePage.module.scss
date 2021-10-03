@@ -18,8 +18,8 @@ $top-bar-height: 3rem;
 }
 
 .sideBar {
-  flex: 0 1 auto;
-  width: 15rem;
+  flex: 0 1 15rem;
+  min-width: 15rem;
   padding: 0.5rem;
 }
 
@@ -34,6 +34,7 @@ $top-bar-height: 3rem;
   top: 0;
   left: 0;
   box-sizing: content-box;
+  z-index: 1000;
 
   &Top {
     @extend .indicator;
@@ -54,4 +55,8 @@ $top-bar-height: 3rem;
     @extend .indicator;
     border-left: 1px dashed red;
   }
+}
+
+.inlineBlock {
+  display: inline-block;
 }

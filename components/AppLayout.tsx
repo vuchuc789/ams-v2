@@ -46,6 +46,7 @@ const siderItems: {
     { path: '/login', title: 'Login', icon: LoginOutlined },
   ],
   authRequired: [
+    { path: '/', title: 'Home', icon: HomeOutlined },
     { path: '/profile', title: 'Profile', icon: ProfileOutlined },
     { path: '/editor', title: 'Editor', icon: EditOutlined },
   ],

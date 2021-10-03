@@ -1,16 +1,15 @@
 import React from 'react';
 import { blue } from '@ant-design/colors';
-import { useEditor } from '@craftjs/core';
-import { Button, Divider, Space } from 'antd';
-import { Text } from './components';
+import { Element, useEditor } from '@craftjs/core';
+import { Button, Divider, Space as AntSpace } from 'antd';
+import { Paragraph, Text, Image, Space } from './components';
+import { ROOT_NODE } from '@craftjs/utils';
 
 interface SideBarProps {
   className?: string;
 }
 
-export const SideBar: React.FC<SideBarProps> = ({
-  className,
-}: SideBarProps) => {
+export const SideBar: React.FC<SideBarProps> = ({ className }) => {
   const { connectors, selected, actions } = useEditor((state, query) => {
     const currentNodeId = state.events.selected;
     let selected;
@@ -23,6 +22,7 @@ export const SideBar: React.FC<SideBarProps> = ({
           state.nodes[currentNodeId].related &&
           state.nodes[currentNodeId].related.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
+        parent: state.nodes[currentNodeId].data.parent,
       };
     }
 
@@ -32,7 +32,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   });
 
   return (
-    <Space
+    <AntSpace
       direction="vertical"
       className={className}
       style={{ backgroundColor: blue[0] }}
@@ -41,15 +41,47 @@ export const SideBar: React.FC<SideBarProps> = ({
       <Button
         block
         ref={(ref: HTMLElement) => {
+          connectors.create(ref, <Element is={Paragraph} canvas />);
+        }}
+      >
+        Paragraph
+      </Button>
+      <Button
+        block
+        ref={(ref: HTMLElement) => {
           connectors.create(ref, <Text />);
         }}
       >
         Text
       </Button>
-      {!!selected && (
+      <Button
+        block
+        ref={(ref: HTMLElement) => {
+          connectors.create(ref, <Image alt="Change me" />);
+        }}
+      >
+        Image
+      </Button>
+      <Button
+        block
+        ref={(ref: HTMLElement) => {
+          connectors.create(ref, <Element is={Space} canvas />);
+        }}
+      >
+        Space
+      </Button>
+      {!!selected && selected.id !== ROOT_NODE && (
         <>
           <Divider orientation="left">Settings</Divider>
           {!!selected.settings && React.createElement(selected.settings)}
+          <Button
+            block
+            onClick={() => {
+              actions.selectNode(selected.parent);
+            }}
+          >
+            Select Parent
+          </Button>
           {!!selected.isDeletable && (
             <Button
               block
@@ -62,6 +94,6 @@ export const SideBar: React.FC<SideBarProps> = ({
           )}
         </>
       )}
-    </Space>
+    </AntSpace>
   );
 };

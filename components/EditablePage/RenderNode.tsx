@@ -10,16 +10,16 @@ interface RenderNodeProps {
 
 export const RenderNode: React.ComponentType<RenderNodeProps> = ({
   render,
-}: RenderNodeProps) => {
+}) => {
   const dispatch = useDispatch<SyncDispatch>();
 
-  const { isHovered, dom } = useNode((node) => ({
-    isHovered: node.events.hovered,
+  const { isSelected, dom } = useNode((node) => ({
+    isSelected: node.events.selected,
     dom: node.dom,
   }));
 
   useEffect(() => {
-    if (!isHovered || !dom) {
+    if (!isSelected || !dom) {
       return;
     }
 
@@ -30,7 +30,7 @@ export const RenderNode: React.ComponentType<RenderNodeProps> = ({
     return () => {
       dispatch({ type: RESET_EDITOR_INDICATOR });
     };
-  }, [isHovered, dom, dispatch]);
+  }, [isSelected, dom, dispatch]);
 
   return <>{render}</>;
 };

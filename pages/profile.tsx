@@ -1,7 +1,11 @@
-import { AppLayout } from 'components';
+import { AppLayout, LoginRequired } from 'components';
 
 const Profile: React.FC = () => {
-  return <AppLayout>Profile</AppLayout>;
+  return (
+    <LoginRequired>
+      <AppLayout>Profile</AppLayout>;
+    </LoginRequired>
+  );
 };
 
 export default Profile;

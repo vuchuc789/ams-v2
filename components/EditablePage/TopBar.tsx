@@ -4,7 +4,7 @@ interface TopBarProps {
   className?: string;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ className }: TopBarProps) => {
+export const TopBar: React.FC<TopBarProps> = ({ className }) => {
   return (
     <div className={className} style={{ backgroundColor: grey[0] }}>
       Top bar
