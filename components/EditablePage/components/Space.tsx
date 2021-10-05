@@ -35,7 +35,7 @@ export const Space: UserComponent<Partial<SpaceProps>> = ({
       }}
       className={styles.inlineBlock}
     >
-      {children ? (
+      {!!children ? (
         <AntSpace align={align} direction={direction} size={size} wrap={wrap}>
           {children}
         </AntSpace>

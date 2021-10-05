@@ -2,7 +2,7 @@ import React from 'react';
 import { blue } from '@ant-design/colors';
 import { Element, useEditor } from '@craftjs/core';
 import { Button, Divider, Space as AntSpace } from 'antd';
-import { Paragraph, Text, Image, Space } from './components';
+import { Paragraph, Text, Image, Space, Row } from './components';
 import { ROOT_NODE } from '@craftjs/utils';
 
 interface SideBarProps {
@@ -69,6 +69,14 @@ export const SideBar: React.FC<SideBarProps> = ({ className }) => {
         }}
       >
         Space
+      </Button>
+      <Button
+        block
+        ref={(ref: HTMLElement) => {
+          connectors.create(ref, <Element is={Row} canvas />);
+        }}
+      >
+        Row
       </Button>
       {!!selected && selected.id !== ROOT_NODE && (
         <>
