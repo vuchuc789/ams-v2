@@ -1,5 +1,13 @@
 import { useNode, UserComponent } from '@craftjs/core';
-import { Row as AntRow, Col as AntCol, Typography, Space, Select } from 'antd';
+import {
+  Row as AntRow,
+  Col as AntCol,
+  Typography,
+  Space,
+  Select,
+  InputNumber,
+  Checkbox,
+} from 'antd';
 
 interface RowProps {
   children: React.ReactNode;
@@ -31,7 +39,9 @@ export const Row: UserComponent<Partial<RowProps>> = ({
       wrap={wrap}
     >
       {children || (
-        <Typography.Text keyboard>Drag components to me</Typography.Text>
+        <AntCol>
+          <Typography.Text keyboard>Drag cols to me</Typography.Text>
+        </AntCol>
       )}
     </AntRow>
   );
@@ -93,6 +103,44 @@ const RowSettings: React.FC = () => {
           </Select>
         </AntCol>
       </AntRow>
+      <AntRow align="middle">
+        <AntCol span={10}>Gutter:</AntCol>
+        <AntCol span={14}>
+          <Space direction="vertical">
+            <InputNumber
+              min={0}
+              defaultValue={gutter[0]}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.gutter = [value, props.gutter[1]];
+                });
+              }}
+            />
+            <InputNumber
+              min={0}
+              defaultValue={gutter[1]}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.gutter = [props.gutter[0], value];
+                });
+              }}
+            />
+          </Space>
+        </AntCol>
+      </AntRow>
+      <AntRow align="middle">
+        <AntCol span={10}>Wrap:</AntCol>
+        <AntCol span={14}>
+          <Checkbox
+            checked={wrap}
+            onChange={(e) => {
+              setProp((props: RowProps) => {
+                props.wrap = e.target.checked;
+              });
+            }}
+          />
+        </AntCol>
+      </AntRow>
     </Space>
   );
 };
@@ -104,7 +152,75 @@ Row.craft = {
     justify: 'start',
     wrap: true,
   },
+  rules: {
+    canMoveIn: (node) => node.data.name === 'Column',
+  },
   related: {
     settings: RowSettings,
+  },
+};
+
+interface ColumnProps {
+  children: React.ReactNode;
+  span: number;
+}
+
+export const Column: UserComponent<Partial<ColumnProps>> = ({
+  children,
+  span = 0,
+}) => {
+  const {
+    connectors: { connect, drag },
+  } = useNode();
+
+  return (
+    <AntCol
+      ref={(ele: HTMLDivElement) => {
+        connect(drag(ele));
+      }}
+      span={span || undefined}
+    >
+      {children || (
+        <Typography.Text keyboard>Drag components to me</Typography.Text>
+      )}
+    </AntCol>
+  );
+};
+
+const ColumnSettings: React.FC = () => {
+  const {
+    actions: { setProp },
+    span,
+  } = useNode((node) => ({
+    span: node.data.props.span,
+  }));
+
+  return (
+    <Space direction="vertical">
+      <AntCol span={10}>Gutter:</AntCol>
+      <AntCol span={14}>
+        <InputNumber
+          min={0}
+          defaultValue={span}
+          onChange={(value) => {
+            setProp((props: ColumnProps) => {
+              props.span = value;
+            });
+          }}
+        />
+      </AntCol>
+    </Space>
+  );
+};
+
+Column.craft = {
+  props: {
+    span: 0,
+  },
+  rules: {
+    canDrop: (node) => node.data.name === 'Row',
+  },
+  related: {
+    settings: ColumnSettings,
   },
 };
