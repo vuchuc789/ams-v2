@@ -17,6 +17,7 @@ import {
   Row,
   Column,
   Title,
+  Link,
 } from './components';
 import { ROOT_NODE } from '@craftjs/utils';
 
@@ -108,6 +109,14 @@ export const SideBar: React.FC<SideBarProps> = ({ className }) => {
         }}
       >
         Column
+      </Button>
+      <Button
+        block
+        ref={(ref: HTMLElement) => {
+          connectors.create(ref, <Link />);
+        }}
+      >
+        Link
       </Button>
       {!!selected && selected.id !== ROOT_NODE && (
         <>

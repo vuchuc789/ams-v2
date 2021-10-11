@@ -5,3 +5,4 @@ export * from './Image';
 export * from './Space';
 export * from './Grid';
 export * from './Title';
+export * from './Link';

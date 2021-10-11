@@ -197,18 +197,20 @@ const ColumnSettings: React.FC = () => {
 
   return (
     <Space direction="vertical">
-      <AntCol span={10}>Gutter:</AntCol>
-      <AntCol span={14}>
-        <InputNumber
-          min={0}
-          defaultValue={span}
-          onChange={(value) => {
-            setProp((props: ColumnProps) => {
-              props.span = value;
-            });
-          }}
-        />
-      </AntCol>
+      <AntRow align="middle">
+        <AntCol span={10}>Span:</AntCol>
+        <AntCol span={14}>
+          <InputNumber
+            min={0}
+            defaultValue={span}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.span = value;
+              });
+            }}
+          />
+        </AntCol>
+      </AntRow>
     </Space>
   );
 };

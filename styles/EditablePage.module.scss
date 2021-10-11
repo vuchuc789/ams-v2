@@ -2,9 +2,10 @@ $top-bar-height: 3rem;
 
 .topBar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: $top-bar-height;
+  padding: 0 1rem;
 }
 
 .editor {

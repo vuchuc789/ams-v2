@@ -11,6 +11,7 @@ import {
   Row,
   Column,
   Title,
+  Link,
 } from './components';
 import React from 'react';
 import { RenderNode } from './RenderNode';
@@ -19,11 +20,13 @@ import { RootState } from 'interfaces';
 
 interface EditablePageProps {
   isEditable?: boolean;
+  state?: string;
   className?: string;
 }
 
 export const EditablePage: React.FC<EditablePageProps> = ({
   isEditable = false,
+  state,
   className,
 }) => {
   const { x, y, width, height } = useSelector(
@@ -62,19 +65,21 @@ export const EditablePage: React.FC<EditablePageProps> = ({
           Row,
           Column,
           Title,
+          Link,
         }}
         onRender={RenderNode}
         enabled={isEditable}
       >
-        <TopBar className={styles.topBar} />
+        {isEditable && <TopBar className={styles.topBar} />}
         <div className={styles.editor}>
-          <Frame>
-            <Element is={Container} className={styles.container} canvas>
-              <Element is={Text} text="abc" />
-              <Element is={Text} text="qqq" />
-            </Element>
+          <Frame json={state}>
+            <Element
+              is={Container}
+              className={styles.container}
+              canvas
+            ></Element>
           </Frame>
-          <SideBar className={styles.sideBar} />
+          {isEditable && <SideBar className={styles.sideBar} />}
         </div>
       </Editor>
     </div>
