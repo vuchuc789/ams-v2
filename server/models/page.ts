@@ -29,4 +29,4 @@ const pageSchema = new Schema<Page>({
   },
 });
 
-export const User = models.pages || model<Page>('pages', pageSchema);
+export const Page = models.pages || model<Page>('pages', pageSchema);

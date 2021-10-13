@@ -1,32 +1,16 @@
-import type { ResponseData } from 'server/interfaces';
 import { handler } from 'server/utils';
 import { FACEBOOK_URL } from '@constants';
 import { LOGIN_TYPE } from '@constants';
 import { User } from 'server/models';
 
-const authorizationFieldPrefix = 'Bearer ';
-
-export default handler<ResponseData>(async (req, res) => {
-  const token = req.headers.authorization;
-  if (!token) {
-    res.json({ status: 'error', message: 'token not found' });
-    return;
-  }
-
-  if (!token.startsWith(authorizationFieldPrefix)) {
-    res.json({ status: 'error', message: 'token invalid' });
+export default handler(async (req, res) => {
+  if (req.method !== 'GET') {
+    res.json({ status: 'error', message: 'wrong http method' });
     return;
   }
 
   switch (req.query.login_type) {
     case LOGIN_TYPE.FACEBOOK.toString():
-      const response = await fetch(
-        `${FACEBOOK_URL}/me?access_token=${token.substring(
-          authorizationFieldPrefix.length,
-        )}&fields=id,name,email`,
-      );
-      const data: { [key: string]: unknown } = await response.json();
-
       if (!data.id) {
         res.json({ status: 'error', message: 'failure to authenticate' });
         break;
