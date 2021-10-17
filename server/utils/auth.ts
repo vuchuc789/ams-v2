@@ -1,11 +1,11 @@
 import { FACEBOOK_URL, LOGIN_TYPE } from '@constants';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ResponseData } from 'server/interfaces';
+import { NextApiResponse } from 'next';
+import { CustomRequest, ResponseData } from 'server/interfaces';
 
 const authorizationFieldPrefix = 'Bearer ';
 
 export const getAuthInfos = async <T = undefined>(
-  req: NextApiRequest,
+  req: CustomRequest,
   res: NextApiResponse<ResponseData<T>>,
 ): Promise<boolean> => {
   const token = req.headers.authorization;
@@ -16,7 +16,8 @@ export const getAuthInfos = async <T = undefined>(
   }
 
   if (!token.startsWith(authorizationFieldPrefix)) {
-    res.json({ status: 'error', message: 'token invalid' });
+    res.json({ status: 'error', message: 'invalid token' });
+
     return false;
   }
 
@@ -29,9 +30,24 @@ export const getAuthInfos = async <T = undefined>(
       );
       const data: { [key: string]: unknown } = await response.json();
 
-      if (data.id) {
-        req.auth = { id: data.id, type: LOGIN_TYPE.FACEBOOK };
+      if (!data.id) {
+        res.json({ status: 'error', message: 'fail to authenticate' });
+
+        return false;
       }
+
+      req.auth = {
+        id: data.id as string,
+        type: LOGIN_TYPE.FACEBOOK,
+        name: data.name as string,
+        email: data.email as string,
+      };
+      break;
+
+    default:
+      res.json({ status: 'error', message: 'login type not found' });
+
+      return false;
   }
 
   return true;

@@ -1,6 +1,4 @@
 import { handler } from 'server/utils';
-import { FACEBOOK_URL } from '@constants';
-import { LOGIN_TYPE } from '@constants';
 import { User } from 'server/models';
 
 export default handler(async (req, res) => {
@@ -9,42 +7,34 @@ export default handler(async (req, res) => {
     return;
   }
 
-  switch (req.query.login_type) {
-    case LOGIN_TYPE.FACEBOOK.toString():
-      if (!data.id) {
-        res.json({ status: 'error', message: 'failure to authenticate' });
-        break;
-      }
+  if (!req.auth) {
+    res.json({ status: 'error', message: 'fail to authenticate' });
+    return;
+  }
 
-      let user = await User.findOne({
-        authType: LOGIN_TYPE.FACEBOOK,
-        authId: data.id as string,
-      });
+  let user = await User.findOne({
+    authType: req.auth.type,
+    authId: req.auth.id,
+  });
 
-      if (!user) {
-        user = new User({
-          authType: LOGIN_TYPE.FACEBOOK,
-          authId: data.id,
-          name: data.name,
-          email: data.email,
-        });
+  if (!user) {
+    user = new User({
+      authType: req.auth.type,
+      authId: req.auth.id,
+      name: req.auth.name,
+      email: req.auth.email,
+    });
 
-        await user.save();
+    await user.save();
 
-        res.json({
-          status: 'success',
-          message: 'user is created',
-        });
-        break;
-      }
-
-      res.json({
-        status: 'success',
-        message: 'user found',
-      });
-      break;
-
-    default:
-      res.json({ status: 'error', message: 'login type not found' });
+    res.json({
+      status: 'success',
+      message: 'user is created',
+    });
+  } else {
+    res.json({
+      status: 'success',
+      message: 'user found',
+    });
   }
 });
