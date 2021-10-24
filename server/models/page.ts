@@ -1,14 +1,15 @@
 import { SLUG_MAX_LENGTH } from '@constants';
 import { Schema, model, models, ObjectId } from 'mongoose';
 
-export interface Page {
+export interface PageType {
   userId: ObjectId;
   name: string;
   slug: string;
   hashedContent: string;
+  isPublic: boolean;
 }
 
-const pageSchema = new Schema<Page>({
+const pageSchema = new Schema<PageType>({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -27,6 +28,12 @@ const pageSchema = new Schema<Page>({
   hashedContent: {
     type: String,
   },
+  isPublic: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-export const Page = models.pages || model<Page>('pages', pageSchema);
+delete models.pages;
+
+export const Page = model<PageType>('pages', pageSchema);

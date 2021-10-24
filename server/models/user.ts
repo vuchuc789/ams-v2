@@ -1,13 +1,13 @@
 import { Schema, model, models } from 'mongoose';
 
-export interface User {
+export interface UserType {
   authId: string;
   authType: number;
-  name?: string;
-  email?: string;
+  name: string;
+  email: string;
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<UserType>({
   authType: {
     type: Number,
     required: true,
@@ -24,4 +24,6 @@ const userSchema = new Schema<User>({
   },
 });
 
-export const User = models.users || model<User>('users', userSchema);
+delete models.users;
+
+export const User = model<UserType>('users', userSchema);

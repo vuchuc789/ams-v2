@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { CustomRequest, ResponseData } from 'server/interfaces';
-import { getAuthInfos } from './auth';
+import { getAuthInfos } from 'server/middlewares';
 import { Database } from './index';
 
 export const handler = <T = undefined>(
