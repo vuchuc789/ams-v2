@@ -1,8 +1,9 @@
-import { LOGGED_IN, LOGGING_IN, LOGOUT } from '@constants';
+import { LOGGED_IN, LOGGING_IN, LOGIN_TYPE, LOGOUT } from '@constants';
 import type { SyncAction } from 'interfaces';
 
 interface AuthState extends fb.AuthResponse {
   isLoggingIn: boolean;
+  loginType?: LOGIN_TYPE;
 }
 
 const initialState: AuthState = {

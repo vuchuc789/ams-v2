@@ -29,7 +29,10 @@ const popupFacebookLoginWindow =
         const { status, authResponse } = await facebookService.login();
 
         if (status === 'connected') {
-          dispatch({ type: LOGGED_IN, payload: authResponse });
+          dispatch({
+            type: LOGGED_IN,
+            payload: { ...authResponse, loginType: LOGIN_TYPE.FACEBOOK },
+          });
 
           await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
 
@@ -72,7 +75,10 @@ export const loginWithFacebook =
         const { status, authResponse } = await facebookService.getLoginStatus();
 
         if (status === 'connected') {
-          dispatch({ type: LOGGED_IN, payload: authResponse });
+          dispatch({
+            type: LOGGED_IN,
+            payload: { ...authResponse, loginType: LOGIN_TYPE.FACEBOOK },
+          });
 
           await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
 
