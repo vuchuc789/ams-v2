@@ -1,13 +1,8 @@
+import { PageResponse } from 'interfaces';
 import { genSlug } from 'server/helpers';
 import { Page, User } from 'server/models';
 import { handler } from 'server/utils';
 import { v4 as uuid } from 'uuid';
-
-interface PageResponse {
-  name: string;
-  slug: string;
-  pages: { name: string; slug: string }[];
-}
 
 export default handler<Partial<PageResponse>>(async (req, res) => {
   try {

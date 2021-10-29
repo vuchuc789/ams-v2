@@ -22,8 +22,10 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const resPages = getPages(accessToken, loginType);
+      const resPages = await getPages(accessToken, loginType);
+      console.log(resPages);
     };
+    asyncEffect();
   }, []);
 
   return (

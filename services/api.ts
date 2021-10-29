@@ -1,4 +1,5 @@
 import { LOGIN_TYPE } from '@constants';
+import { PageResponse } from 'interfaces';
 import { ResponseData } from 'server/interfaces';
 
 export const checkUser = async (
@@ -17,7 +18,7 @@ export const checkUser = async (
 export const getPages = async (
   token: string,
   loginType?: LOGIN_TYPE,
-): Promise<{ name: string; slug: string }[]> => {
+): Promise<PageResponse['pages']> => {
   if (typeof loginType === 'undefined') {
     throw new Error('login type is undefined');
   }
@@ -30,7 +31,16 @@ export const getPages = async (
     },
   });
 
-  const jsonRes: ResponseData = await res.json();
+  const { data, status, message }: ResponseData<PageResponse> =
+    await res.json();
 
-  return await res.json();
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  if (!data?.pages) {
+    throw new Error('Something went wrong');
+  }
+
+  return data.pages;
 };

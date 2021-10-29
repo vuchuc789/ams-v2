@@ -3,3 +3,9 @@ export interface IBBResponse {
     url: string;
   };
 }
+
+export interface PageResponse {
+  name: string;
+  slug: string;
+  pages: { name: string; slug: string }[];
+}
