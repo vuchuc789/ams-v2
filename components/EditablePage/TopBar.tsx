@@ -5,7 +5,7 @@ import { RootState } from 'interfaces';
 import lz from 'lzutf8';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getPages } from 'services';
+import { addPage, getPages } from 'services';
 
 interface TopBarProps {
   className?: string;
@@ -23,6 +23,10 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
   useEffect(() => {
     const asyncEffect = async () => {
       const resPages = await getPages(accessToken, loginType);
+
+      if (resPages.length === 0) {
+        await addPage('Homepage', accessToken, loginType);
+      }
       console.log(resPages);
     };
     asyncEffect();
