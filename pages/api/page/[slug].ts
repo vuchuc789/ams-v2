@@ -11,6 +11,30 @@ interface PageResponse {
 
 export default handler<Partial<PageResponse>>(async (req, res) => {
   try {
+    const slug = req.query.slug as string;
+
+    if (!slug || typeof slug !== 'string') {
+      res.json({ status: 'error', message: 'slug not found' });
+      return;
+    }
+
+    const page = await Page.findOne({ slug });
+
+    if (!page) {
+      res.json({ status: 'error', message: 'page not found' });
+      return;
+    }
+
+    if (page.isPublic && req.method === 'GET') {
+      res.json({
+        status: 'success',
+        message: 'page found',
+        data: { name: page.name, content: page.hashedContent || '' },
+      });
+
+      return;
+    }
+
     if (!req.auth) {
       res.json({ status: 'error', message: 'fail to auth' });
       return;
@@ -26,20 +50,6 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
       return;
     }
 
-    const slug = req.query.slug as string;
-
-    if (!slug || typeof slug !== 'string') {
-      res.json({ status: 'error', message: 'slug not found' });
-      return;
-    }
-
-    const page = await Page.findOne({ slug });
-
-    if (!page) {
-      res.json({ status: 'error', message: 'page not found' });
-      return;
-    }
-
     if (user._id.toString() !== page.userId.toString()) {
       res.json({ status: 'error', message: 'fail to auth' });
       return;
@@ -50,7 +60,7 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
         res.json({
           status: 'success',
           message: 'page found',
-          data: { content: page.hashedContent || '' },
+          data: { name: page.name, content: page.hashedContent || '' },
         });
         break;
 
@@ -88,7 +98,6 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
           data: {
             name: result.name,
             slug: result.slug,
-            content: result.hashedContent,
           },
         });
         break;

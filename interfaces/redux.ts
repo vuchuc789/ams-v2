@@ -17,4 +17,4 @@ export type AsyncAction = (
   dispatch: AsyncDispatch,
   getState: () => RootState,
   extraArgument: unknown,
-) => void;
+) => void | Promise<void>;

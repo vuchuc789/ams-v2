@@ -5,7 +5,7 @@ const Page: React.FC = () => {
   const encoded = window.localStorage.getItem('state') || '';
   const state = lz.decompress(lz.decodeBase64(encoded)) || undefined;
 
-  return <EditablePage isEditable={false} state={state} />;
+  return <EditablePage isEditable={false} initData={state} />;
 };
 
 export default Page;

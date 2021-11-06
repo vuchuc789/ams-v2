@@ -9,6 +9,7 @@ import {
   CLEAR_USER_INFO,
 } from '@constants';
 import { notifyError, notifySuccess } from './notification';
+import { getPages } from './page';
 
 const popupFacebookLoginWindow =
   (callback = () => {}): AsyncAction =>
@@ -41,6 +42,8 @@ const popupFacebookLoginWindow =
           const userInfo = await facebookService.getUserInfo();
 
           dispatch({ type: SET_USER_INFO, payload: userInfo });
+
+          dispatch(getPages());
         } else {
           dispatch(notifyError('Fail to login with Facebook'));
           dispatch({ type: LOGGED_IN });
@@ -85,6 +88,8 @@ export const loginWithFacebook =
           const userInfo = await facebookService.getUserInfo();
 
           dispatch({ type: SET_USER_INFO, payload: userInfo });
+
+          dispatch(getPages());
         } else {
           if (loginIfNotDone) {
             // this case does not directly call callback function

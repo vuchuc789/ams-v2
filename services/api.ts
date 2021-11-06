@@ -49,7 +49,7 @@ export const addPage = async (
   name: string,
   token: string,
   loginType?: LOGIN_TYPE,
-): Promise<void> => {
+): Promise<{ name: string; slug: string }> => {
   if (typeof loginType === 'undefined') {
     throw new Error('login type is undefined');
   }
@@ -59,8 +59,64 @@ export const addPage = async (
     headers: {
       Authorization: `Bearer ${token}`,
       'x-auth-type': loginType.toString(),
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ name }),
+  });
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return data;
+};
+
+export const getPage = async (
+  slug: string,
+  token: string,
+  loginType?: LOGIN_TYPE,
+): Promise<{ content: string }> => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/page/${slug}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+    },
+  });
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return data;
+};
+
+export const savePage = async (
+  slug: string,
+  content: string,
+  token: string,
+  loginType?: LOGIN_TYPE,
+) => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/page/${slug}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content }),
   });
 
   const { status, message } = await res.json();

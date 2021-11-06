@@ -1,11 +1,12 @@
 import { grey } from '@ant-design/colors';
 import { useEditor } from '@craftjs/core';
+import { notifySuccess } from 'actions';
 import { Button, Select, Space } from 'antd';
-import { RootState } from 'interfaces';
+import { AsyncDispatch, RootState } from 'interfaces';
 import lz from 'lzutf8';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { addPage, getPages } from 'services';
+import { useEffect } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getPage, savePage } from 'services';
 
 interface TopBarProps {
   className?: string;
@@ -14,23 +15,40 @@ interface TopBarProps {
 export const TopBar: React.FC<TopBarProps> = ({ className }) => {
   const { query } = useEditor();
 
-  const [pages, setPages] = useState<{ name: string; slug: string }[]>([]);
+  const {
+    page: { pages, selectedPage },
+    auth: { accessToken, loginType },
+  } = useSelector((state: RootState) => state, shallowEqual);
 
-  const { accessToken, loginType } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const dispatch = useDispatch<AsyncDispatch>();
+
+  const {
+    actions: { deserialize },
+  } = useEditor();
 
   useEffect(() => {
-    const asyncEffect = async () => {
-      const resPages = await getPages(accessToken, loginType);
+    if (!selectedPage) {
+      return;
+    }
 
-      if (resPages.length === 0) {
-        await addPage('Homepage', accessToken, loginType);
+    const asyncFunc = async () => {
+      const { content } = await getPage(
+        selectedPage.slug,
+        accessToken,
+        loginType,
+      );
+
+      if (!content) {
+        return;
       }
-      console.log(resPages);
+
+      const decodedContent = lz.decompress(lz.decodeBase64(content));
+
+      deserialize(decodedContent);
     };
-    asyncEffect();
-  }, []);
+
+    asyncFunc();
+  }, [selectedPage, accessToken, loginType, deserialize]);
 
   return (
     <div className={className} style={{ backgroundColor: grey[0] }}>
@@ -39,11 +57,26 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
         <Button>Redo</Button>
       </Space>
       <Space>
-        <Select></Select>
+        {!!pages.length && (
+          <Select value={selectedPage?.slug}>
+            {pages.map((page, i) => (
+              <Select.Option value={page.slug} key={i}>
+                {page.name}
+              </Select.Option>
+            ))}
+          </Select>
+        )}
         <Button
-          onClick={() => {
-            const state = lz.encodeBase64(lz.compress(query.serialize()));
-            window.localStorage.setItem('state', state);
+          onClick={async () => {
+            if (!selectedPage) {
+              return;
+            }
+
+            const content = lz.encodeBase64(lz.compress(query.serialize()));
+            window.localStorage.setItem('state', content);
+            await savePage(selectedPage.slug, content, accessToken, loginType);
+
+            dispatch(notifySuccess('Your page is saved'));
           }}
         >
           Save
