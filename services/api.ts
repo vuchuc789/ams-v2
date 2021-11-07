@@ -125,3 +125,27 @@ export const savePage = async (
     throw new Error(message);
   }
 };
+
+export const deletePage = async (
+  slug: string,
+  token: string,
+  loginType?: LOGIN_TYPE,
+): Promise<void> => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/page/${slug}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+    },
+  });
+
+  const { status, message } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+};

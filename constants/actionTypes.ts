@@ -16,3 +16,4 @@ export const RESET_EDITOR_INDICATOR = 'RESET_EDITOR_INDICATOR';
 export const SET_PAGES = 'SET_PAGES';
 export const ADD_PAGES = 'ADD_PAGES';
 export const SELECT_PAGE = 'SELECT_PAGE';
+export const DELETE_PAGE = 'DELETE_PAGE';
