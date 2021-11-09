@@ -28,8 +28,13 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
   const dispatch = useDispatch<AsyncDispatch>();
 
   const {
-    actions: { deserialize },
-  } = useEditor();
+    actions: { deserialize, history },
+    canUndo,
+    canRedo,
+  } = useEditor((state, query) => ({
+    canUndo: query.history.canUndo(),
+    canRedo: query.history.canRedo(),
+  }));
 
   useEffect(() => {
     if (!selectedPage) {
@@ -47,7 +52,7 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
         if (!content) {
           dispatch(
             notifyError(
-              'The current selected page is blank so contents of previous one are kept.',
+              'The current selected page is blank (contents of previous one might be kept)',
             ),
           );
           return;
@@ -67,8 +72,24 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
   return (
     <div className={className} style={{ backgroundColor: grey[0] }}>
       <Space>
-        <Button>Undo</Button>
-        <Button>Redo</Button>
+        <Button
+          onClick={() => {
+            if (canUndo) {
+              history.undo();
+            }
+          }}
+        >
+          Undo
+        </Button>
+        <Button
+          onClick={() => {
+            if (canRedo) {
+              history.redo();
+            }
+          }}
+        >
+          Redo
+        </Button>
       </Space>
       <Space>
         {!!pages.length && (
@@ -93,13 +114,26 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
                     }}
                   />
                   <Button
-                    onClick={() => {
+                    onClick={async () => {
                       if (!newPageName) {
                         return;
                       }
 
                       dispatch(createPage(newPageName));
                       setNewPageName('');
+
+                      if (selectedPage) {
+                        const content = lz.encodeBase64(
+                          lz.compress(query.serialize()),
+                        );
+
+                        await savePage(
+                          selectedPage.slug,
+                          content,
+                          accessToken,
+                          loginType,
+                        );
+                      }
                     }}
                   >
                     Add
