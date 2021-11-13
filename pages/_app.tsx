@@ -9,7 +9,6 @@ import thunk from 'redux-thunk';
 import { notification } from 'antd';
 import rootReducer from 'reducers';
 import { NOTIFICATION_DURATION, NOTIFICATION_PLACEMENT } from '@constants';
-import { Initialization } from 'components';
 
 const composeEnhancers =
   (process.env.NODE_ENV === 'development' &&
@@ -31,9 +30,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
-      <Initialization>
-        <Component {...pageProps} />
-      </Initialization>
+      <Component {...pageProps} />
     </Provider>
   );
 };

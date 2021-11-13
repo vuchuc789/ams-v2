@@ -77,7 +77,7 @@ export const getPage = async (
   slug: string,
   token: string,
   loginType?: LOGIN_TYPE,
-): Promise<{ content: string }> => {
+): Promise<{ name: string; content: string; isPublic: boolean }> => {
   if (typeof loginType === 'undefined') {
     throw new Error('login type is undefined');
   }
@@ -141,6 +141,33 @@ export const deletePage = async (
       Authorization: `Bearer ${token}`,
       'x-auth-type': loginType.toString(),
     },
+  });
+
+  const { status, message } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+};
+
+export const publicPage = async (
+  slug: string,
+  isPublic: boolean,
+  token: string,
+  loginType?: LOGIN_TYPE,
+): Promise<void> => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/page/${slug}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ isPublic }),
   });
 
   const { status, message } = await res.json();

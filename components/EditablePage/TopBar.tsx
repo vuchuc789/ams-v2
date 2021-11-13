@@ -2,12 +2,12 @@ import { grey } from '@ant-design/colors';
 import { useEditor } from '@craftjs/core';
 import { notifyError, notifySuccess } from 'actions';
 import { createPage, deletePage, selectPage } from 'actions/page';
-import { Button, Divider, Input, Select, Space, Modal } from 'antd';
+import { Button, Divider, Input, Select, Space, Modal, Switch } from 'antd';
 import { AsyncDispatch, RootState } from 'interfaces';
 import lz from 'lzutf8';
 import React, { useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { getPage, savePage } from 'services';
+import { getPage, publicPage, savePage } from 'services';
 
 interface TopBarProps {
   className?: string;
@@ -17,6 +17,7 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
   const [newPageName, setNewPageName] = useState<string>('');
   const [isModalDeleteVisible, setModalDeleteVisible] =
     useState<boolean>(false);
+  const [isCurrentPagePublic, setCurrentPagePublic] = useState<boolean>(false);
 
   const { query } = useEditor();
 
@@ -43,11 +44,13 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
 
     const asyncFunc = async () => {
       try {
-        const { content } = await getPage(
+        const { content, isPublic } = await getPage(
           selectedPage.slug,
           accessToken,
           loginType,
         );
+
+        setCurrentPagePublic(isPublic);
 
         if (!content) {
           dispatch(
@@ -92,6 +95,31 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
         </Button>
       </Space>
       <Space>
+        <Switch
+          checkedChildren="Public"
+          unCheckedChildren="Draft"
+          checked={isCurrentPagePublic}
+          onClick={async () => {
+            if (!selectedPage) {
+              return;
+            }
+
+            try {
+              setCurrentPagePublic(!isCurrentPagePublic);
+
+              await publicPage(
+                selectedPage.slug,
+                !isCurrentPagePublic,
+                accessToken,
+                loginType,
+              );
+              dispatch(notifySuccess('Change page status successfully'));
+            } catch (error) {
+              setCurrentPagePublic(!isCurrentPagePublic);
+              dispatch(notifyError('Fail to change page status'));
+            }
+          }}
+        />
         {!!pages.length && (
           <Select
             style={{ minWidth: '10rem' }}

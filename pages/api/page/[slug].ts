@@ -7,6 +7,7 @@ interface PageResponse {
   name: string;
   slug: string;
   content: string;
+  isPublic: boolean;
 }
 
 export default handler<Partial<PageResponse>>(async (req, res) => {
@@ -29,7 +30,11 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
       res.json({
         status: 'success',
         message: 'page found',
-        data: { name: page.name, content: page.hashedContent || '' },
+        data: {
+          name: page.name,
+          content: page.hashedContent || '',
+          isPublic: page.isPublic,
+        },
       });
 
       return;
@@ -60,14 +65,18 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
         res.json({
           status: 'success',
           message: 'page found',
-          data: { name: page.name, content: page.hashedContent || '' },
+          data: {
+            name: page.name,
+            content: page.hashedContent || '',
+            isPublic: page.isPublic,
+          },
         });
         break;
 
       case 'PUT':
       case 'PATCH':
-        const { name, content } = req.body;
-        if (!name && !content) {
+        const { name, content, isPublic } = req.body;
+        if (!name && !content && typeof isPublic !== 'boolean') {
           res.json({ status: 'error', message: 'no change found' });
           break;
         }
@@ -90,6 +99,10 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
           page.hashedContent = content;
         }
 
+        if (typeof isPublic === 'boolean') {
+          page.isPublic = isPublic;
+        }
+
         const result = await page.save();
 
         res.json({
@@ -98,6 +111,7 @@ export default handler<Partial<PageResponse>>(async (req, res) => {
           data: {
             name: result.name,
             slug: result.slug,
+            isPublic: result.isPublic,
           },
         });
         break;
