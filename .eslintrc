@@ -7,6 +7,7 @@
   "plugins": ["prettier"],
   "rules": {
     "no-console": "warn",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "@next/next/no-page-custom-font": "off"
   }
 }

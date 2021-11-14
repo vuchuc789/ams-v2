@@ -132,26 +132,24 @@ const RowSettings: React.FC = () => {
       <AntRow align="middle">
         <AntCol span={10}>Gutter:</AntCol>
         <AntCol span={14}>
-          <Space direction="vertical">
-            <InputNumber
-              min={0}
-              defaultValue={gutter[0]}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.gutter = [value, props.gutter[1]];
-                });
-              }}
-            />
-            <InputNumber
-              min={0}
-              defaultValue={gutter[1]}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.gutter = [props.gutter[0], value];
-                });
-              }}
-            />
-          </Space>
+          <InputNumber
+            min={0}
+            defaultValue={gutter[0]}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.gutter = [value, props.gutter[1]];
+              });
+            }}
+          />
+          <InputNumber
+            min={0}
+            defaultValue={gutter[1]}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.gutter = [props.gutter[0], value];
+              });
+            }}
+          />
         </AntCol>
       </AntRow>
       <AntRow align="middle">
@@ -170,83 +168,79 @@ const RowSettings: React.FC = () => {
       <AntRow align="middle">
         <AntCol span={10}>Margin:</AntCol>
         <AntCol span={14}>
-          <Space direction="vertical">
-            <InputNumber
-              defaultValue={margin?.top || 0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.margin = { ...props.margin, top: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={margin?.right || 0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.margin = { ...props.margin, right: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={margin?.down || 0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.margin = { ...props.margin, down: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={margin?.left || 0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.margin = { ...props.margin, left: value };
-                });
-              }}
-            />
-          </Space>
+          <InputNumber
+            defaultValue={margin?.top || 0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.margin = { ...props.margin, top: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={margin?.right || 0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.margin = { ...props.margin, right: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={margin?.down || 0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.margin = { ...props.margin, down: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={margin?.left || 0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.margin = { ...props.margin, left: value };
+              });
+            }}
+          />
         </AntCol>
       </AntRow>
       <AntRow align="middle">
         <AntCol span={10}>Padding:</AntCol>
         <AntCol span={14}>
-          <Space direction="vertical">
-            <InputNumber
-              defaultValue={padding?.top || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.padding = { ...props.padding, top: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={padding?.right || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.padding = { ...props.padding, right: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={padding?.down || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.padding = { ...props.padding, down: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={padding?.left || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: RowProps) => {
-                  props.padding = { ...props.padding, left: value };
-                });
-              }}
-            />
-          </Space>
+          <InputNumber
+            defaultValue={padding?.top || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.padding = { ...props.padding, top: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={padding?.right || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.padding = { ...props.padding, right: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={padding?.down || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.padding = { ...props.padding, down: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={padding?.left || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: RowProps) => {
+                props.padding = { ...props.padding, left: value };
+              });
+            }}
+          />
         </AntCol>
       </AntRow>
     </Space>
@@ -273,6 +267,11 @@ Row.craft = {
 interface ColumnProps {
   children: React.ReactNode;
   span: number;
+  flex: {
+    grow: number;
+    shrink: number;
+    basis: number;
+  };
   margin: {
     top: number;
     right: number;
@@ -290,6 +289,7 @@ interface ColumnProps {
 export const Column: UserComponent<Partial<ColumnProps>> = ({
   children,
   span = 0,
+  flex = { grow: 0, shrink: 1, basis: 0 },
   margin = { top: 0, right: 0, down: 0, left: 0 },
   padding = { top: 0, right: 0, down: 0, left: 0 },
 }) => {
@@ -303,6 +303,13 @@ export const Column: UserComponent<Partial<ColumnProps>> = ({
         connect(drag(ele));
       }}
       span={span || undefined}
+      flex={
+        !span
+          ? `${flex?.grow || 0} ${flex?.shrink || 1} ${
+              flex?.basis ? `${flex.basis}px` : 'auto'
+            }`
+          : undefined
+      }
       style={{
         margin: `${margin?.top || 0}px ${margin?.right || 0}px ${
           margin?.down || 0
@@ -323,10 +330,12 @@ const ColumnSettings: React.FC = () => {
   const {
     actions: { setProp },
     span,
+    flex,
     margin,
     padding,
   } = useNode((node) => ({
     span: node.data.props.span,
+    flex: node.data.props.flex,
     margin: node.data.props.margin,
     padding: node.data.props.padding,
   }));
@@ -347,86 +356,116 @@ const ColumnSettings: React.FC = () => {
           />
         </AntCol>
       </AntRow>
+      {!span && (
+        <AntRow align="middle">
+          <AntCol span={10}>Flex:</AntCol>
+          <AntCol span={14}>
+            <InputNumber
+              min={0}
+              defaultValue={flex?.grow || 0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.flex = { ...props.flex, grow: value };
+                });
+              }}
+            />
+            <InputNumber
+              min={0}
+              defaultValue={flex?.shrink || 1}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.flex = { ...props.flex, shrink: value };
+                });
+              }}
+            />
+            <InputNumber
+              min={0}
+              defaultValue={flex?.basis || 0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.flex = { ...props.flex, basis: value };
+                });
+              }}
+            />
+          </AntCol>
+        </AntRow>
+      )}
       <AntRow align="middle">
         <AntCol span={10}>Margin:</AntCol>
         <AntCol span={14}>
-          <Space direction="vertical">
-            <InputNumber
-              defaultValue={margin?.top || 0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.margin = { ...props.margin, top: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={margin?.right || 0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.margin = { ...props.margin, right: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={margin?.down || 0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.margin = { ...props.margin, down: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={margin?.left || 0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.margin = { ...props.margin, left: value };
-                });
-              }}
-            />
-          </Space>
+          <InputNumber
+            defaultValue={margin?.top || 0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.margin = { ...props.margin, top: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={margin?.right || 0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.margin = { ...props.margin, right: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={margin?.down || 0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.margin = { ...props.margin, down: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={margin?.left || 0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.margin = { ...props.margin, left: value };
+              });
+            }}
+          />
         </AntCol>
       </AntRow>
       <AntRow align="middle">
         <AntCol span={10}>Padding:</AntCol>
         <AntCol span={14}>
-          <Space direction="vertical">
-            <InputNumber
-              defaultValue={padding?.top || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.padding = { ...props.padding, top: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={padding?.right || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.padding = { ...props.padding, right: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={padding?.down || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.padding = { ...props.padding, down: value };
-                });
-              }}
-            />
-            <InputNumber
-              defaultValue={padding?.left || 0}
-              min={0}
-              onChange={(value) => {
-                setProp((props: ColumnProps) => {
-                  props.padding = { ...props.padding, left: value };
-                });
-              }}
-            />
-          </Space>
+          <InputNumber
+            defaultValue={padding?.top || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.padding = { ...props.padding, top: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={padding?.right || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.padding = { ...props.padding, right: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={padding?.down || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.padding = { ...props.padding, down: value };
+              });
+            }}
+          />
+          <InputNumber
+            defaultValue={padding?.left || 0}
+            min={0}
+            onChange={(value) => {
+              setProp((props: ColumnProps) => {
+                props.padding = { ...props.padding, left: value };
+              });
+            }}
+          />
         </AntCol>
       </AntRow>
     </Space>
@@ -436,6 +475,7 @@ const ColumnSettings: React.FC = () => {
 Column.craft = {
   props: {
     span: 0,
+    flex: { grow: 0, shrink: 1, basis: 0 },
     margin: { top: 0, right: 0, down: 0, left: 0 },
     padding: { top: 0, right: 0, down: 0, left: 0 },
   },

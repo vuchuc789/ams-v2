@@ -1,4 +1,4 @@
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import 'styles/globals.scss';
 
 import { useEffect } from 'react';

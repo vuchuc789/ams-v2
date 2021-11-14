@@ -118,7 +118,7 @@ export const SideBar: React.FC<SideBarProps> = ({ className }) => {
       >
         Link
       </Button>
-      {!!selected && selected.id !== ROOT_NODE && (
+      {!!selected && (
         <>
           <Divider orientation="left">Current</Divider>
           <AntRow justify="center">
@@ -126,17 +126,23 @@ export const SideBar: React.FC<SideBarProps> = ({ className }) => {
               <Tag color="red">{selected.name}</Tag>
             </AntCol>
           </AntRow>
-          <Divider orientation="left">Settings</Divider>
-          {!!selected.settings && React.createElement(selected.settings)}
+          {!!selected.settings && (
+            <>
+              <Divider orientation="left">Settings</Divider>
+              {React.createElement(selected.settings)}
+            </>
+          )}
           <Divider orientation="left">Options</Divider>
-          <Button
-            block
-            onClick={() => {
-              actions.selectNode(selected.parent);
-            }}
-          >
-            Select Parent
-          </Button>
+          {!!selected.parent && (
+            <Button
+              block
+              onClick={() => {
+                actions.selectNode(selected.parent);
+              }}
+            >
+              Select Parent
+            </Button>
+          )}
           {!!selected.isDeletable && (
             <Button
               block
