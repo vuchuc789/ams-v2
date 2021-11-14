@@ -26,7 +26,11 @@ export const Link: UserComponent<Partial<LinkProps>> = ({
         connect(drag(ele));
       }}
       href={href}
-      disabled={enabled}
+      onClick={(e) => {
+        if (enabled) {
+          e.preventDefault();
+        }
+      }}
       target="_blank"
     >
       {title}

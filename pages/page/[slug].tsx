@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       return { notFound: true };
     }
 
-    return { props: { name: page.name, content: page.hashedContent } };
+    return { props: { name: page.name, content: page.hashedContent || '' } };
   } catch (e) {
     return { notFound: true };
   }
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
 const Page: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
   ({ content, name }) => {
-    const data = lz.decompress(lz.decodeBase64(content));
+    const data = content ? lz.decompress(lz.decodeBase64(content)) : undefined;
 
     return (
       <>

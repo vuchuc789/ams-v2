@@ -15,6 +15,18 @@ interface RowProps {
   gutter: [number, number];
   justify: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
   wrap: boolean;
+  margin: {
+    top: number;
+    right: number;
+    down: number;
+    left: number;
+  };
+  padding: {
+    top: number;
+    right: number;
+    down: number;
+    left: number;
+  };
 }
 
 export const Row: UserComponent<Partial<RowProps>> = ({
@@ -23,6 +35,8 @@ export const Row: UserComponent<Partial<RowProps>> = ({
   gutter = [0, 0],
   justify = 'start',
   wrap = true,
+  margin = { top: 0, right: 0, down: 0, left: 0 },
+  padding = { top: 0, right: 0, down: 0, left: 0 },
 }) => {
   const {
     connectors: { connect, drag },
@@ -37,6 +51,14 @@ export const Row: UserComponent<Partial<RowProps>> = ({
       gutter={gutter}
       justify={justify}
       wrap={wrap}
+      style={{
+        margin: `${margin?.top || 0}px ${margin?.right || 0}px ${
+          margin?.down || 0
+        }px ${margin?.left || 0}px`,
+        padding: `${padding?.top || 0}px ${padding?.right || 0}px ${
+          padding?.down || 0
+        }px ${padding?.left || 0}px`,
+      }}
     >
       {children || (
         <AntCol>
@@ -54,11 +76,15 @@ const RowSettings: React.FC = () => {
     gutter,
     justify,
     wrap,
+    margin,
+    padding,
   } = useNode((node) => ({
     align: node.data.props.align,
     gutter: node.data.props.gutter,
     justify: node.data.props.justify,
     wrap: node.data.props.wrap,
+    margin: node.data.props.margin,
+    padding: node.data.props.padding,
   }));
 
   return (
@@ -141,6 +167,88 @@ const RowSettings: React.FC = () => {
           />
         </AntCol>
       </AntRow>
+      <AntRow align="middle">
+        <AntCol span={10}>Margin:</AntCol>
+        <AntCol span={14}>
+          <Space direction="vertical">
+            <InputNumber
+              defaultValue={margin?.top || 0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.margin = { ...props.margin, top: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.right || 0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.margin = { ...props.margin, right: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.down || 0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.margin = { ...props.margin, down: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.left || 0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.margin = { ...props.margin, left: value };
+                });
+              }}
+            />
+          </Space>
+        </AntCol>
+      </AntRow>
+      <AntRow align="middle">
+        <AntCol span={10}>Padding:</AntCol>
+        <AntCol span={14}>
+          <Space direction="vertical">
+            <InputNumber
+              defaultValue={padding?.top || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.padding = { ...props.padding, top: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.right || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.padding = { ...props.padding, right: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.down || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.padding = { ...props.padding, down: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.left || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: RowProps) => {
+                  props.padding = { ...props.padding, left: value };
+                });
+              }}
+            />
+          </Space>
+        </AntCol>
+      </AntRow>
     </Space>
   );
 };
@@ -151,6 +259,8 @@ Row.craft = {
     gutter: [0, 0],
     justify: 'start',
     wrap: true,
+    margin: { top: 0, right: 0, down: 0, left: 0 },
+    padding: { top: 0, right: 0, down: 0, left: 0 },
   },
   rules: {
     canMoveIn: (node) => node.data.name === 'Column',
@@ -163,11 +273,25 @@ Row.craft = {
 interface ColumnProps {
   children: React.ReactNode;
   span: number;
+  margin: {
+    top: number;
+    right: number;
+    down: number;
+    left: number;
+  };
+  padding: {
+    top: number;
+    right: number;
+    down: number;
+    left: number;
+  };
 }
 
 export const Column: UserComponent<Partial<ColumnProps>> = ({
   children,
   span = 0,
+  margin = { top: 0, right: 0, down: 0, left: 0 },
+  padding = { top: 0, right: 0, down: 0, left: 0 },
 }) => {
   const {
     connectors: { connect, drag },
@@ -179,6 +303,14 @@ export const Column: UserComponent<Partial<ColumnProps>> = ({
         connect(drag(ele));
       }}
       span={span || undefined}
+      style={{
+        margin: `${margin?.top || 0}px ${margin?.right || 0}px ${
+          margin?.down || 0
+        }px ${margin?.left || 0}px`,
+        padding: `${padding?.top || 0}px ${padding?.right || 0}px ${
+          padding?.down || 0
+        }px ${padding?.left || 0}px`,
+      }}
     >
       {children || (
         <Typography.Text keyboard>Drag components to me</Typography.Text>
@@ -191,8 +323,12 @@ const ColumnSettings: React.FC = () => {
   const {
     actions: { setProp },
     span,
+    margin,
+    padding,
   } = useNode((node) => ({
     span: node.data.props.span,
+    margin: node.data.props.margin,
+    padding: node.data.props.padding,
   }));
 
   return (
@@ -211,6 +347,88 @@ const ColumnSettings: React.FC = () => {
           />
         </AntCol>
       </AntRow>
+      <AntRow align="middle">
+        <AntCol span={10}>Margin:</AntCol>
+        <AntCol span={14}>
+          <Space direction="vertical">
+            <InputNumber
+              defaultValue={margin?.top || 0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.margin = { ...props.margin, top: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.right || 0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.margin = { ...props.margin, right: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.down || 0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.margin = { ...props.margin, down: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.left || 0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.margin = { ...props.margin, left: value };
+                });
+              }}
+            />
+          </Space>
+        </AntCol>
+      </AntRow>
+      <AntRow align="middle">
+        <AntCol span={10}>Padding:</AntCol>
+        <AntCol span={14}>
+          <Space direction="vertical">
+            <InputNumber
+              defaultValue={padding?.top || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.padding = { ...props.padding, top: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.right || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.padding = { ...props.padding, right: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.down || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.padding = { ...props.padding, down: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.left || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: ColumnProps) => {
+                  props.padding = { ...props.padding, left: value };
+                });
+              }}
+            />
+          </Space>
+        </AntCol>
+      </AntRow>
     </Space>
   );
 };
@@ -218,6 +436,8 @@ const ColumnSettings: React.FC = () => {
 Column.craft = {
   props: {
     span: 0,
+    margin: { top: 0, right: 0, down: 0, left: 0 },
+    padding: { top: 0, right: 0, down: 0, left: 0 },
   },
   rules: {
     canDrop: (node) => node.data.name === 'Row',

@@ -1,8 +1,18 @@
 import { grey } from '@ant-design/colors';
+import { LinkOutlined } from '@ant-design/icons';
 import { useEditor } from '@craftjs/core';
 import { notifyError, notifySuccess } from 'actions';
 import { createPage, deletePage, selectPage } from 'actions/page';
-import { Button, Divider, Input, Select, Space, Modal, Switch } from 'antd';
+import {
+  Button,
+  Divider,
+  Input,
+  Select,
+  Space,
+  Modal,
+  Switch,
+  Tooltip,
+} from 'antd';
 import { AsyncDispatch, RootState } from 'interfaces';
 import lz from 'lzutf8';
 import React, { useEffect, useState } from 'react';
@@ -120,6 +130,22 @@ export const TopBar: React.FC<TopBarProps> = ({ className }) => {
             }
           }}
         />
+        <Tooltip title="Copy link of this page">
+          <Button
+            icon={<LinkOutlined />}
+            onClick={() => {
+              if (!selectedPage) {
+                return;
+              }
+
+              navigator.clipboard.writeText(
+                `${window.location.origin}/page/${selectedPage.slug}`,
+              );
+
+              dispatch(notifySuccess('Copied to clipboard'));
+            }}
+          />
+        </Tooltip>
         {!!pages.length && (
           <Select
             style={{ minWidth: '10rem' }}

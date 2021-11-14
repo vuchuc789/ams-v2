@@ -65,6 +65,7 @@ export const Image: UserComponent<Partial<ImageProps>> = ({
           <Dragger
             name="image"
             action={IMAGE_UPLOADER_API}
+            openFileDialogOnClick={false}
             onChange={(info: UploadChangeParam<UploadFile<IBBResponse>>) => {
               const {
                 file: { status, response },
@@ -76,7 +77,7 @@ export const Image: UserComponent<Partial<ImageProps>> = ({
               }
             }}
           >
-            <Typography.Text>Drag or click to add image to me</Typography.Text>
+            <Typography.Text>Drag to add image to me</Typography.Text>
           </Dragger>
         )
       )}

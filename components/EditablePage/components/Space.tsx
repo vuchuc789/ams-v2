@@ -6,6 +6,7 @@ import {
   Space as AntSpace,
   Typography,
   Checkbox,
+  InputNumber,
 } from 'antd';
 import { useNode, UserComponent } from '@craftjs/core';
 
@@ -15,6 +16,18 @@ interface SpaceProps {
   direction: 'vertical' | 'horizontal';
   size: 'small' | 'middle' | 'large';
   wrap: boolean;
+  margin: {
+    top: number;
+    right: number;
+    down: number;
+    left: number;
+  };
+  padding: {
+    top: number;
+    right: number;
+    down: number;
+    left: number;
+  };
 }
 
 export const Space: UserComponent<Partial<SpaceProps>> = ({
@@ -23,6 +36,8 @@ export const Space: UserComponent<Partial<SpaceProps>> = ({
   direction = 'horizontal',
   size = 'small',
   wrap = false,
+  margin = { top: 0, right: 0, down: 0, left: 0 },
+  padding = { top: 0, right: 0, down: 0, left: 0 },
 }) => {
   const {
     connectors: { connect, drag },
@@ -36,7 +51,20 @@ export const Space: UserComponent<Partial<SpaceProps>> = ({
       className={styles.inlineBlock}
     >
       {!!children ? (
-        <AntSpace align={align} direction={direction} size={size} wrap={wrap}>
+        <AntSpace
+          align={align}
+          direction={direction}
+          size={size}
+          wrap={wrap}
+          style={{
+            margin: `${margin?.top || 0}px ${margin?.right || 0}px ${
+              margin?.down || 0
+            }px ${margin?.left || 0}px`,
+            padding: `${padding?.top || 0}px ${padding?.right || 0}px ${
+              padding?.down || 0
+            }px ${padding?.left || 0}px`,
+          }}
+        >
           {children}
         </AntSpace>
       ) : (
@@ -53,11 +81,15 @@ const SpaceSettings: React.FC = ({}) => {
     size,
     direction,
     wrap,
+    margin,
+    padding,
   } = useNode((node) => ({
     align: node.data.props.align,
     direction: node.data.props.direction,
     size: node.data.props.size,
     wrap: node.data.props.wrap,
+    margin: node.data.props.margin,
+    padding: node.data.props.padding,
   }));
 
   return (
@@ -129,6 +161,88 @@ const SpaceSettings: React.FC = ({}) => {
       >
         Wrap
       </Checkbox>
+      <Row align="middle">
+        <Col span={10}>Margin:</Col>
+        <Col span={14}>
+          <AntSpace direction="vertical">
+            <InputNumber
+              defaultValue={margin?.top || 0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.margin = { ...props.margin, top: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.right || 0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.margin = { ...props.margin, right: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.down || 0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.margin = { ...props.margin, down: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={margin?.left || 0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.margin = { ...props.margin, left: value };
+                });
+              }}
+            />
+          </AntSpace>
+        </Col>
+      </Row>
+      <Row align="middle">
+        <Col span={10}>Padding:</Col>
+        <Col span={14}>
+          <AntSpace direction="vertical">
+            <InputNumber
+              defaultValue={padding?.top || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.padding = { ...props.padding, top: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.right || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.padding = { ...props.padding, right: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.down || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.padding = { ...props.padding, down: value };
+                });
+              }}
+            />
+            <InputNumber
+              defaultValue={padding?.left || 0}
+              min={0}
+              onChange={(value) => {
+                setProp((props: SpaceProps) => {
+                  props.padding = { ...props.padding, left: value };
+                });
+              }}
+            />
+          </AntSpace>
+        </Col>
+      </Row>
     </AntSpace>
   );
 };
