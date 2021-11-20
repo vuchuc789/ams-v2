@@ -20,25 +20,37 @@ export const Container: UserComponent<Partial<ContainerProps>> = ({
         <link
           href="https://fonts.googleapis.com/css2?family=Praise&display=swap"
           rel="stylesheet"
+          key="custom-font"
         />
-        <style>{`
-          .ant-typography {
-            color: red;
+        <style key="custom-style">{`
+          .root-container .ant-typography:not(a):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not([class*="ant-typography-"]) {
+            color: red !important;
           }
 
-          a.ant-typography {
-            color: auto;
+          .root-container a.ant-typography {
+            color: green !important;
           }
+
+          .root-container h1.ant-typography,
+          .root-container h2.ant-typography,
+          .root-container h3.ant-typography,
+          .root-container h4.ant-typography,
+          .root-container h5.ant-typography,
+          .root-container h6.ant-typography {
+            color: brown !important;
+          }
+
         `}</style>
       </Head>
       <div
         ref={(ref: HTMLDivElement) => {
           connect(ref);
         }}
-        className={className}
+        className={`${className} root-container`}
         style={{
           backgroundColor: 'blue',
           fontFamily: 'Praise',
+          fontSize: '3rem',
         }}
       >
         {children}

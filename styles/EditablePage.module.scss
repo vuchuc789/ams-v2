@@ -22,9 +22,12 @@ $top-bar-height: 3rem;
   }
 }
 
+.notEditable {
+  height: 100%;
+}
+
 .sideBar {
-  flex: 0 1 15rem;
-  min-width: 15rem;
+  flex: 0 0 15rem;
   padding: 0.5rem;
   overflow-y: auto;
 }

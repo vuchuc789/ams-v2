@@ -1,4 +1,4 @@
-import { Editor, Element, Frame, useEditor } from '@craftjs/core';
+import { Editor, Element, Frame } from '@craftjs/core';
 import { TopBar } from './TopBar';
 import { SideBar } from './SideBar';
 import styles from 'styles/EditablePage.module.scss';
@@ -13,11 +13,10 @@ import {
   Title,
   Link,
 } from './components';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RenderNode } from './RenderNode';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'interfaces';
-import { getPage } from 'services';
 
 interface EditablePageProps {
   isEditable?: boolean;
@@ -36,7 +35,7 @@ export const EditablePage: React.FC<EditablePageProps> = ({
 
   return (
     <div className={className}>
-      {!!isEditable && (
+      {isEditable && (
         <>
           <div
             className={styles.indicatorTop}
@@ -72,7 +71,11 @@ export const EditablePage: React.FC<EditablePageProps> = ({
         enabled={isEditable}
       >
         {isEditable && <TopBar className={styles.topBar} />}
-        <div className={styles.editor}>
+        <div
+          className={`${styles.editor}${
+            isEditable ? '' : ` ${styles.notEditable}`
+          }`}
+        >
           <Frame data={initData}>
             <Element
               is={Container}

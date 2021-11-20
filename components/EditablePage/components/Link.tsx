@@ -1,5 +1,5 @@
 import { useEditor, useNode, UserComponent } from '@craftjs/core';
-import { Typography, Col, Input, Row, Space, Select } from 'antd';
+import { Typography, Col, Input, Row, Space } from 'antd';
 
 interface LinkProps {
   href: string;
@@ -42,7 +42,6 @@ const LinkSettings: React.FC = () => {
   const {
     actions: { setProp },
     href,
-    target,
     title,
   } = useNode((node) => ({
     href: node.data.props.href,

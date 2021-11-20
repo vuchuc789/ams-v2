@@ -19,13 +19,12 @@ import {
   Title,
   Link,
 } from './components';
-import { ROOT_NODE } from '@craftjs/utils';
 
 interface SideBarProps {
   className?: string;
 }
 
-export const SideBar: React.FC<SideBarProps> = ({ className }) => {
+export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
   const { connectors, selected, actions } = useEditor((state, query) => {
     const currentNodeId = state.events.selected;
     let selected;

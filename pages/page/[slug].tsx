@@ -3,6 +3,7 @@ import { Page as PageModel } from 'server/models';
 import { EditablePage } from 'components';
 import lz from 'lzutf8';
 import Head from 'next/head';
+import styles from 'styles/Page.module.scss';
 
 interface PageProps {
   name: string;
@@ -40,7 +41,11 @@ const Page: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         <Head>
           <title>{name}</title>
         </Head>
-        <EditablePage isEditable={false} initData={data} />
+        <EditablePage
+          className={styles.page}
+          isEditable={false}
+          initData={data}
+        />
       </>
     );
   };

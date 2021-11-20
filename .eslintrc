@@ -8,6 +8,7 @@
   "rules": {
     "no-console": "warn",
     "prettier/prettier": "error",
-    "@next/next/no-page-custom-font": "off"
+    "@next/next/no-page-custom-font": "off",
+    "no-unused-vars": "error"
   }
 }
