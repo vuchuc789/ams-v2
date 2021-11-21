@@ -74,6 +74,9 @@ const LinkSettings: React.FC = () => {
                 props.href = event.target.value;
               });
             }}
+            onFocus={(e) => {
+              e.target.select();
+            }}
           />
         </Col>
       </Row>

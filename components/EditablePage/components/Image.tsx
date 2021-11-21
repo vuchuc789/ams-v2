@@ -104,8 +104,8 @@ const ImageSettings: React.FC = () => {
         Source
         <Input
           value={src}
-          onClick={(e) => {
-            (e.target as HTMLInputElement).select();
+          onFocus={(e) => {
+            e.target.select();
           }}
           onChange={(e) => {
             setProp((props: ImageProps) => {

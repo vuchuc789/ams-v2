@@ -7,7 +7,7 @@ import styles from 'styles/Page.module.scss';
 
 interface PageProps {
   name: string;
-  content: string;
+  content?: string;
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (
@@ -26,7 +26,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
       return { notFound: true };
     }
 
-    return { props: { name: page.name, content: page.hashedContent || '' } };
+    const content = page.hashedContent
+      ? lz.decompress(lz.decodeBase64(page.hashedContent))
+      : undefined;
+
+    return { props: { name: page.name, content } };
   } catch (e) {
     return { notFound: true };
   }
@@ -34,18 +38,12 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
 const Page: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
   ({ content, name }) => {
-    const data = content ? lz.decompress(lz.decodeBase64(content)) : undefined;
-
     return (
       <>
         <Head>
           <title>{name}</title>
         </Head>
-        <EditablePage
-          className={styles.page}
-          isEditable={false}
-          initData={data}
-        />
+        <EditablePage className={styles.page} initData={content} />
       </>
     );
   };

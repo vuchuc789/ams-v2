@@ -80,6 +80,14 @@ export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
       <Button
         block
         ref={(ref: HTMLElement) => {
+          connectors.create(ref, <Link />);
+        }}
+      >
+        Link
+      </Button>
+      <Button
+        block
+        ref={(ref: HTMLElement) => {
           connectors.create(ref, <Image alt="Change me" />);
         }}
       >
@@ -109,14 +117,6 @@ export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
       >
         Column
       </Button>
-      <Button
-        block
-        ref={(ref: HTMLElement) => {
-          connectors.create(ref, <Link />);
-        }}
-      >
-        Link
-      </Button>
       {!!selected && (
         <>
           <Divider orientation="left">Current</Divider>
@@ -131,7 +131,9 @@ export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
               {React.createElement(selected.settings)}
             </>
           )}
-          <Divider orientation="left">Options</Divider>
+          {!!selected.parent && !!selected.isDeletable && (
+            <Divider orientation="left">Options</Divider>
+          )}
           {!!selected.parent && (
             <Button
               block
