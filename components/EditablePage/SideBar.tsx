@@ -19,6 +19,7 @@ import {
   Title,
   Link,
 } from './components';
+import { Layers } from '@craftjs/layers';
 
 interface SideBarProps {
   className?: string;
@@ -156,6 +157,8 @@ export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
           )}
         </>
       )}
+      <Divider orientation="left">Layers</Divider>
+      <Layers expandRootOnLoad />
     </AntSpace>
   );
 };
