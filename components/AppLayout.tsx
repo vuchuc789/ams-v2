@@ -215,12 +215,12 @@ export const AppLayout: React.FC<Props> = ({ children, className }) => {
             </div>
             <div>
               {!!userName && (
-                <h4>
+                <>
                   Hello,{' '}
                   <Link href="/profile">
                     <a>{userName}</a>
                   </Link>
-                </h4>
+                </>
               )}
               {!!userAvatar && <Avatar src={userAvatar.url} size="large" />}
               <Dropdown overlay={dropdownMenu} placement="bottomLeft">

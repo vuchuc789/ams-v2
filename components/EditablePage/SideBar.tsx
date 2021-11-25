@@ -118,6 +118,8 @@ export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
       >
         Column
       </Button>
+      <Divider orientation="left">Layers</Divider>
+      <Layers expandRootOnLoad />
       {!!selected && (
         <>
           <Divider orientation="left">Current</Divider>
@@ -157,8 +159,6 @@ export const SideBar: React.FC<SideBarProps> = ({ className = '' }) => {
           )}
         </>
       )}
-      <Divider orientation="left">Layers</Divider>
-      <Layers expandRootOnLoad />
     </AntSpace>
   );
 };
