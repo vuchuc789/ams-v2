@@ -1,14 +1,22 @@
+import { ADPIA_DEEPLINK_URL } from '@constants';
 import { useEditor, useNode, UserComponent } from '@craftjs/core';
-import { Typography, Col, Input, Row, Space } from 'antd';
+import { Typography, Col, Input, Row, Space, Checkbox, Tooltip } from 'antd';
+import { RootState } from 'interfaces';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 interface LinkProps {
   href: string;
   title: string;
+  isAffiliateLink: boolean;
+  affiliateHref: string;
 }
 
 export const Link: UserComponent<Partial<LinkProps>> = ({
   href = '',
   title = 'Click me',
+  isAffiliateLink = false,
+  affiliateHref = '',
 }) => {
   const {
     connectors: { connect, drag },
@@ -25,7 +33,7 @@ export const Link: UserComponent<Partial<LinkProps>> = ({
       ref={(ele: HTMLAnchorElement) => {
         connect(drag(ele));
       }}
-      href={href}
+      href={isAffiliateLink ? affiliateHref : href}
       onClick={(e) => {
         if (enabled) {
           e.preventDefault();
@@ -43,11 +51,14 @@ const LinkSettings: React.FC = () => {
     actions: { setProp },
     href,
     title,
+    isAffiliateLink,
   } = useNode((node) => ({
     href: node.data.props.href,
-    target: node.data.props.target,
     title: node.data.props.title,
+    isAffiliateLink: node.data.props.isAffiliateLink,
   }));
+
+  const { adpiaId } = useSelector((state: RootState) => state.userInfo);
 
   return (
     <Space direction="vertical">
@@ -72,12 +83,42 @@ const LinkSettings: React.FC = () => {
             onChange={(event) => {
               setProp((props: LinkProps) => {
                 props.href = event.target.value;
+
+                if (!!adpiaId) {
+                  props.affiliateHref = `${ADPIA_DEEPLINK_URL}/?a=${adpiaId}&url=${encodeURIComponent(
+                    event.target.value,
+                  )}`;
+                } else {
+                  props.affiliateHref = event.target.value;
+                }
               });
             }}
             onFocus={(e) => {
               e.target.select();
             }}
           />
+        </Col>
+      </Row>
+      <Row align="middle">
+        <Col span={10}>Affiliate:</Col>
+        <Col span={14}>
+          <Tooltip
+            title={
+              !!adpiaId
+                ? 'Make this link becoming affiliate one'
+                : 'Your adpia id is not set'
+            }
+          >
+            <Checkbox
+              defaultChecked={isAffiliateLink}
+              onChange={(e) => {
+                setProp((props: LinkProps) => {
+                  props.isAffiliateLink = e.target.checked;
+                });
+              }}
+              disabled={!adpiaId}
+            />
+          </Tooltip>
         </Col>
       </Row>
     </Space>
@@ -88,6 +129,8 @@ Link.craft = {
   props: {
     href: '',
     title: 'Click me',
+    isAffiliateLink: false,
+    affiliateHref: '',
   },
   related: {
     settings: LinkSettings,

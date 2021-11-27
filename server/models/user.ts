@@ -5,6 +5,9 @@ export interface UserType {
   authType: number;
   name: string;
   email: string;
+  adpiaId: string;
+  adpiaUsername: string;
+  adpiaAccessToken: string;
 }
 
 const userSchema = new Schema<UserType>({
@@ -20,6 +23,15 @@ const userSchema = new Schema<UserType>({
     type: String,
   },
   email: {
+    type: String,
+  },
+  adpiaId: {
+    type: String,
+  },
+  adpiaUsername: {
+    type: String,
+  },
+  adpiaAccessToken: {
     type: String,
   },
 });

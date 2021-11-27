@@ -39,9 +39,17 @@ const popupFacebookLoginWindow =
 
           dispatch(notifySuccess('Login with facebook successfully'));
 
+          const adpiaInfo = await checkUser(
+            authResponse.accessToken,
+            LOGIN_TYPE.FACEBOOK,
+          );
+
           const userInfo = await facebookService.getUserInfo();
 
-          dispatch({ type: SET_USER_INFO, payload: userInfo });
+          dispatch({
+            type: SET_USER_INFO,
+            payload: { ...userInfo, ...adpiaInfo },
+          });
 
           dispatch(getPages());
         } else {
@@ -83,11 +91,17 @@ export const loginWithFacebook =
             payload: { ...authResponse, loginType: LOGIN_TYPE.FACEBOOK },
           });
 
-          await checkUser(authResponse.accessToken, LOGIN_TYPE.FACEBOOK);
+          const adpiaInfo = await checkUser(
+            authResponse.accessToken,
+            LOGIN_TYPE.FACEBOOK,
+          );
 
           const userInfo = await facebookService.getUserInfo();
 
-          dispatch({ type: SET_USER_INFO, payload: userInfo });
+          dispatch({
+            type: SET_USER_INFO,
+            payload: { ...userInfo, ...adpiaInfo },
+          });
 
           dispatch(getPages());
         } else {

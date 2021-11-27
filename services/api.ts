@@ -5,14 +5,34 @@ import { ResponseData } from 'server/interfaces';
 export const checkUser = async (
   token: string,
   loginType: LOGIN_TYPE,
-): Promise<void> => {
-  await fetch(`/api/user`, {
+): Promise<{
+  adpiaId?: string;
+  adpiaUsername?: string;
+  adpiaAccessToken?: string;
+}> => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/user`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
       'x-auth-type': loginType.toString(),
     },
   });
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return {
+    adpiaId: data?.adpiaId,
+    adpiaUsername: data?.adpiaUsername,
+    adpiaAccessToken: data?.adpiaAccessToken,
+  };
 };
 
 export const getPages = async (
@@ -175,4 +195,46 @@ export const publicPage = async (
   if (status === 'error') {
     throw new Error(message);
   }
+};
+
+export const updateAdpiaInfo = async (
+  id: string,
+  username: string,
+  accessToken: string,
+  token: string,
+  loginType?: LOGIN_TYPE,
+): Promise<{
+  adpiaId?: string;
+  adpiaUsername?: string;
+  adpiaAccessToken?: string;
+}> => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/user`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      adpiaId: id,
+      adpiaUsername: username,
+      adpiaAccessToken: accessToken,
+    }),
+  });
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return {
+    adpiaId: data?.adpiaId,
+    adpiaUsername: data?.adpiaUsername,
+    adpiaAccessToken: data?.adpiaAccessToken,
+  };
 };
