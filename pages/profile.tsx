@@ -66,7 +66,7 @@ const Profile: React.FC = () => {
                 onFinish={async (val) => {
                   try {
                     const adpiaAccessToken = btoa(
-                      toBinary(`${val.username || ''}:${val.password || ''}`),
+                      `${val.username || ''}:${val.password || ''}`,
                     );
 
                     const adpiaInfo = await updateAdpiaInfo(

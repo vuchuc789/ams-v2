@@ -11,6 +11,8 @@ import Icon, {
   LoginOutlined,
   ProfileOutlined,
   EditOutlined,
+  PartitionOutlined,
+  PercentageOutlined,
 } from '@ant-design/icons';
 import Head from 'next/head';
 import { useSelector, useDispatch } from 'react-redux';
@@ -49,6 +51,8 @@ const siderItems: {
     { path: '/', title: 'Home', icon: HomeOutlined },
     { path: '/profile', title: 'Profile', icon: ProfileOutlined },
     { path: '/editor', title: 'Editor', icon: EditOutlined },
+    { path: '/merchant', title: 'Merchant', icon: PartitionOutlined },
+    { path: '/promotion', title: 'Promotion', icon: PercentageOutlined },
   ],
 };
 

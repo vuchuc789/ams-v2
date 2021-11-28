@@ -208,6 +208,8 @@ const ContainerSettings: React.FC = () => {
 };
 
 Container.craft = {
+  name: 'Container',
+  displayName: 'Container',
   props: {
     textColor: 'rgba(0, 0, 0, 0.85)',
     titleColor: 'rgba(0, 0, 0, 0.85)',

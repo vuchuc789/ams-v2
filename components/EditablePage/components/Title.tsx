@@ -233,6 +233,8 @@ const TitleSettings: React.FC = () => {
 };
 
 Title.craft = {
+  name: 'Title',
+  displayName: 'Title',
   props: {
     text: 'Edit me...',
     code: false,

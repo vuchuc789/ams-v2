@@ -7,6 +7,7 @@
     "dev:ssl": "concurrently \"next dev -p 3001\" \"local-ssl-proxy --source 3000 --target 3001\"",
     "build": "next build",
     "start": "next start",
+    "start:ssl": "concurrently \"next start -p 3001\" \"local-ssl-proxy --source 3000 --target 3001\"",
     "lint": "next lint",
     "db": "docker-compose -f mongo.yml up -d",
     "db:stop": "docker-compose -f mongo.yml down"
@@ -28,6 +29,7 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
     "sass": "^1.43.4",
+    "sharp": "^0.29.3",
     "styled-components": "^5.3.3",
     "uuid": "^8.3.2"
   },

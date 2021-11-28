@@ -203,6 +203,8 @@ const ImageSettings: React.FC = () => {
 };
 
 Image.craft = {
+  name: 'image',
+  displayName: 'image',
   props: {
     src: '',
     alt: 'This is an image',

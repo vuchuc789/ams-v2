@@ -224,6 +224,8 @@ const TextSettings: React.FC = () => {
 };
 
 Text.craft = {
+  name: 'Text',
+  displayName: 'Text',
   props: {
     text: 'Edit me...',
     code: false,

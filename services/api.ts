@@ -238,3 +238,29 @@ export const updateAdpiaInfo = async (
     adpiaAccessToken: data?.adpiaAccessToken,
   };
 };
+
+export const getAdpiaPromotions = async (
+  merchantId: string,
+  token: string,
+  loginType?: LOGIN_TYPE,
+) => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/adpia/promotion?mid=${merchantId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+    },
+  });
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return { promotions: data.promotions || [] };
+};

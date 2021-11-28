@@ -298,6 +298,8 @@ const RowSettings: React.FC = () => {
 };
 
 Row.craft = {
+  name: 'Row',
+  displayName: 'Row',
   props: {
     align: 'top',
     gutter: [0, 0],
@@ -578,6 +580,8 @@ const ColumnSettings: React.FC = () => {
 };
 
 Column.craft = {
+  name: 'Column',
+  displayName: 'Column',
   props: {
     span: 0,
     flex: { grow: 0, shrink: 1, basis: 0 },

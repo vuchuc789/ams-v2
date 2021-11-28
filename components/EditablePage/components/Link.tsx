@@ -126,6 +126,8 @@ const LinkSettings: React.FC = () => {
 };
 
 Link.craft = {
+  name: 'Link',
+  displayName: 'Link',
   props: {
     href: '',
     title: 'Click me',

@@ -248,6 +248,8 @@ const SpaceSettings: React.FC = ({}) => {
 };
 
 Space.craft = {
+  name: 'Space',
+  displayName: 'Space',
   props: {
     direction: 'horizontal',
     size: 'small',

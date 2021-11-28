@@ -26,3 +26,5 @@ export const Paragraph: UserComponent<Partial<ParagraphProps>> = ({
     </div>
   );
 };
+
+Paragraph.craft = { name: 'Paragraph', displayName: 'Paragraph' };
