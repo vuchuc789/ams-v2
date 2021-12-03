@@ -43,7 +43,11 @@ const Promotion: React.FC = () => {
     <LoginRequired>
       <AppLayout>
         <Space
-          style={{ padding: '1rem 1rem 0', width: '100%' }}
+          style={{
+            padding: '1rem',
+            width: '100%',
+            minHeight: '100%',
+          }}
           direction="vertical"
         >
           <Input

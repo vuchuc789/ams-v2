@@ -22,7 +22,18 @@ export default handler<Partial<AdpiaResponse>>(async (req, res) => {
       return;
     }
 
-    // TODO: get merchants
+    if (type === 'merchant') {
+      const merchantId = req.query.mid as string;
+
+      if (!merchantId) {
+        res.json({
+          status: 'success',
+          message: 'missing search query or adpia access token not found',
+          data: { promotions: [] },
+        });
+        return;
+      }
+    }
 
     if (!req.auth) {
       res.json({ status: 'error', message: 'fail to authenticate' });

@@ -1,8 +1,8 @@
 import { ADPIA_AFFILIATE_API } from '@constants';
 
-export const getMerchants = async () => {
+export const getMerchants = async (merchantId: string) => {
   const response = await fetch(
-    `${ADPIA_AFFILIATE_API}/merchant/get_merchants_valid`,
+    `${ADPIA_AFFILIATE_API}/merchant/get_merchants_valid/?mid=${merchantId}`,
     {
       method: 'GET',
       headers: {
@@ -12,7 +12,9 @@ export const getMerchants = async () => {
     },
   );
 
-  return await response.json();
+  const jsonResponse = await response.json();
+
+  return jsonResponse.data || [];
 };
 
 export const getPromotions = async (
