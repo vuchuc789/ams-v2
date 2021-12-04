@@ -13,6 +13,7 @@ import Icon, {
   EditOutlined,
   PartitionOutlined,
   PercentageOutlined,
+  CheckCircleOutlined,
 } from '@ant-design/icons';
 import Head from 'next/head';
 import { useSelector, useDispatch } from 'react-redux';
@@ -53,6 +54,7 @@ const siderItems: {
     { path: '/editor', title: 'Editor', icon: EditOutlined },
     { path: '/merchant', title: 'Merchant', icon: PartitionOutlined },
     { path: '/promotion', title: 'Promotion', icon: PercentageOutlined },
+    { path: '/order', title: 'Order', icon: CheckCircleOutlined },
   ],
 };
 

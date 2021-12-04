@@ -1,9 +1,9 @@
 import { User } from 'server/models';
 import { handler } from 'server/utils';
-import { getPromotions } from 'services';
+import { getMerchant, getOrders, getPromotions } from 'services';
 
 interface AdpiaResponse {
-  merchants: { [key: string]: unknown }[];
+  merchant: { [key: string]: unknown };
   promotions: { [key: string]: unknown }[];
   orders: { [key: string]: unknown }[];
 }
@@ -28,11 +28,21 @@ export default handler<Partial<AdpiaResponse>>(async (req, res) => {
       if (!merchantId) {
         res.json({
           status: 'success',
-          message: 'missing search query or adpia access token not found',
-          data: { promotions: [] },
+          message: 'missing search query',
+          data: { merchant: {} },
         });
         return;
       }
+
+      const merchant = await getMerchant(merchantId);
+
+      res.json({
+        status: 'success',
+        message: 'get merchant success',
+        data: { merchant },
+      });
+
+      return;
     }
 
     if (!req.auth) {
@@ -70,10 +80,28 @@ export default handler<Partial<AdpiaResponse>>(async (req, res) => {
 
         res.json({
           status: 'success',
-          message: 'got promotions successfully',
-          data: {
-            promotions,
-          },
+          message: 'get promotions success',
+          data: { promotions },
+        });
+
+        break;
+
+      case 'order':
+        if (!user.adpiaAccessToken) {
+          res.json({
+            status: 'success',
+            message: 'adpia access token not found',
+            data: { orders: [] },
+          });
+          break;
+        }
+
+        const orders = await getOrders(user.adpiaAccessToken);
+
+        res.json({
+          status: 'success',
+          message: 'get promotions success',
+          data: { orders },
         });
 
         break;

@@ -2,16 +2,19 @@ import { notifyError } from 'actions';
 import { AppLayout, LoginRequired } from 'components';
 import { debounce } from 'helpers';
 import { AsyncDispatch, RootState } from 'interfaces';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdpiaPromotions } from 'services';
-import { Input, Space, Row, Col, Card, Tree, Spin } from 'antd';
+import { Input, Space, Row, Col, Card, Tree, Spin, Typography } from 'antd';
+
+const { Title, Link } = Typography;
 
 const Promotion: React.FC = () => {
   const { accessToken, loginType } = useSelector(
     (state: RootState) => state.auth,
   );
 
+  const [merchantId, setMerchantId] = useState('');
   const [promotions, setPromotions] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
@@ -39,6 +42,13 @@ const Promotion: React.FC = () => {
     [accessToken, loginType, dispatch],
   );
 
+  useEffect(() => {
+    if (merchantId) {
+      setLoading(true);
+      debounced(merchantId);
+    }
+  }, [debounced, merchantId]);
+
   return (
     <LoginRequired>
       <AppLayout>
@@ -50,6 +60,7 @@ const Promotion: React.FC = () => {
           }}
           direction="vertical"
         >
+          <Title level={2}>Search promotions by merchant</Title>
           <Input
             addonBefore="Merchant ID"
             addonAfter={
@@ -58,13 +69,25 @@ const Promotion: React.FC = () => {
                 spinning={isLoading}
               >{`${promotions.length} results`}</Spin>
             }
+            value={merchantId}
             onChange={(e) => {
-              setLoading(true);
-              debounced(e.target.value);
+              setMerchantId(e.target.value);
             }}
             placeholder="shopee"
             style={{ width: '50%' }}
           />
+          <Space style={{ marginLeft: '6.5rem' }}>
+            {['tiki', 'shopee', 'lazada', 'sendo'].map((val, i) => (
+              <Link
+                onClick={() => {
+                  setMerchantId(val);
+                }}
+                key={i}
+              >
+                {val}
+              </Link>
+            ))}
+          </Space>
           <Row gutter={[16, 16]}>
             {promotions.map(
               (
@@ -78,7 +101,7 @@ const Promotion: React.FC = () => {
                 },
                 i,
               ) => (
-                <Col key={i} xs={24} sm={12} md={8} lg={6} xl={4}>
+                <Col key={i} sm={24} md={12} lg={8} xl={6}>
                   <Card
                     title={`${mid.charAt(0).toUpperCase()}${mid.slice(
                       1,

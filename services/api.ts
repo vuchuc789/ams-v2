@@ -239,6 +239,18 @@ export const updateAdpiaInfo = async (
   };
 };
 
+export const getAdpiaMerchant = async (merchantId: string) => {
+  const res = await fetch(`/api/adpia/merchant/?mid=${merchantId}`);
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return { merchant: data.merchant || {} };
+};
+
 export const getAdpiaPromotions = async (
   merchantId: string,
   token: string,
@@ -248,7 +260,7 @@ export const getAdpiaPromotions = async (
     throw new Error('login type is undefined');
   }
 
-  const res = await fetch(`/api/adpia/promotion?mid=${merchantId}`, {
+  const res = await fetch(`/api/adpia/promotion/?mid=${merchantId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -263,4 +275,26 @@ export const getAdpiaPromotions = async (
   }
 
   return { promotions: data.promotions || [] };
+};
+
+export const getAdpiaOrders = async (token: string, loginType?: LOGIN_TYPE) => {
+  if (typeof loginType === 'undefined') {
+    throw new Error('login type is undefined');
+  }
+
+  const res = await fetch(`/api/adpia/order`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'x-auth-type': loginType.toString(),
+    },
+  });
+
+  const { status, message, data } = await res.json();
+
+  if (status === 'error') {
+    throw new Error(message);
+  }
+
+  return { orders: data.orders || [] };
 };
