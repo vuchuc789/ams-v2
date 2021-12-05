@@ -4,6 +4,7 @@ import { EditablePage } from 'components';
 import lz from 'lzutf8';
 import Head from 'next/head';
 import styles from 'styles/Page.module.scss';
+import { Database } from 'server/utils/database';
 
 interface PageProps {
   name: string;
@@ -14,6 +15,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
   context,
 ) => {
   try {
+    await Database.connect();
+
     const slug = context.params?.slug as string;
 
     if (!slug || typeof slug !== 'string') {
